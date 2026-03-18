@@ -116,7 +116,7 @@ export function PhotoGallery({ language }: PhotoGalleryProps) {
                 }}
               >
                 <div className="relative aspect-[3/4] overflow-hidden rounded-[2rem] border border-white/35 bg-white/15 backdrop-blur-xl shadow-[0_18px_50px_rgba(36,49,31,0.14)]">
-                  <Image src="/images/groom.jpg" alt="Mirza" fill className="object-cover" />
+                  <Image src="images/WhatsApp Image 2026-03-18 at 4.15.26 PM (1).jpeg" alt="Mirza" fill className="object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#24311f]/78 via-[#24311f]/15 to-transparent" />
                   <div className="absolute inset-0 bg-gradient-to-br from-white/12 via-transparent to-champagne/10" />
 
@@ -151,7 +151,7 @@ export function PhotoGallery({ language }: PhotoGalleryProps) {
                 }}
               >
                 <div className="relative aspect-[3/4] overflow-hidden rounded-[2rem] border border-white/35 bg-white/15 backdrop-blur-xl shadow-[0_18px_50px_rgba(36,49,31,0.14)]">
-                  <Image src="/images/bride.jpg" alt="Jinsha" fill className="object-cover" />
+                  <Image src="/images/WhatsApp Image 2026-03-18 at 4.15.26 PM (2).jpeg" alt="Jinsha" fill className="object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#24311f]/78 via-[#24311f]/15 to-transparent" />
                   <div className="absolute inset-0 bg-gradient-to-br from-white/12 via-transparent to-champagne/10" />
 
@@ -204,7 +204,7 @@ export function PhotoGallery({ language }: PhotoGalleryProps) {
                   />
 
                   <Image
-                    src="/images/couple.jpg"
+                    src="/images/WhatsApp Image 2026-03-18 at 4.15.25 PM.jpeg"
                     alt="Mirza & Jinsha"
                     fill
                     className="object-cover"

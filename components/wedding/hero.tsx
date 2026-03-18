@@ -4,7 +4,6 @@ import { motion } from "framer-motion"
 import Image from "next/image"
 import { useMemo, useState } from "react"
 import { Volume2, VolumeX } from "lucide-react"
-import ScratchDate from "./ScratchDate"
 
 interface HeroProps {
   language: "ES" | "EN"
@@ -45,10 +44,7 @@ function FloatingPetals() {
             ease: "linear",
           }}
         >
-          <div
-            className={`${petal.size} rounded-full bg-gradient-to-br from-champagne/70 via-sage/40 to-olive/25`}
-            style={{ filter: "blur(0.5px)" }}
-          />
+          <div className={`${petal.size} rounded-full bg-gradient-to-br from-champagne/70 via-sage/40 to-olive/25`} />
         </motion.div>
       ))}
     </div>
@@ -74,14 +70,8 @@ function SparkleParticles() {
         <motion.div
           key={sparkle.id}
           className="absolute w-1 h-1 rounded-full bg-champagne/60"
-          style={{
-            left: sparkle.left,
-            top: sparkle.top,
-          }}
-          animate={{
-            scale: [0, 1.2, 0],
-            opacity: [0, 1, 0],
-          }}
+          style={{ left: sparkle.left, top: sparkle.top }}
+          animate={{ scale: [0, 1.2, 0], opacity: [0, 1, 0] }}
           transition={{
             duration: sparkle.duration,
             repeat: Infinity,
@@ -100,24 +90,21 @@ export function Hero({ language }: HeroProps) {
   const content = {
     EN: {
       subtitle: "We are getting married",
-      date: "April 25 & 26, 2026",
-      scroll: "",
+      scroll: "Scroll to explore",
     },
     ES: {
       subtitle: "Nos casamos",
-      date: "25 y 26 de Abril, 2026",
       scroll: "Desplázate para explorar",
     },
   }
 
-  const { subtitle, date, scroll } = content[language]
+  const { subtitle, scroll } = content[language]
 
   return (
     <section
       id="home"
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-ivory via-cream to-sage/10"
     >
-      {/* Background Image */}
       <motion.div
         className="absolute inset-0"
         initial={{ scale: 1.08 }}
@@ -125,27 +112,23 @@ export function Hero({ language }: HeroProps) {
         transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
       >
         <Image
-          src="/images/wedding-hero.jpg"
+          src="/images/wedding-hero.JPG"
           alt="Wedding ceremony backdrop"
           fill
           className="object-cover"
           priority
         />
 
-        {/* Luxury cinematic overlays with strong readability */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#f5f0e6]/82 via-[#f5f0e6]/42 to-[#e8e2d6]/88" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#24311f]/34 via-transparent to-[#24311f]/22" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_30%,rgba(36,49,31,0.22)_100%)]" />
       </motion.div>
 
-      {/* Effects */}
       <FloatingPetals />
       <SparkleParticles />
 
-      {/* Top glow */}
       <div className="pointer-events-none absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-champagne/10 to-transparent" />
 
-      {/* Music Toggle */}
       <motion.button
         className="absolute top-24 right-4 z-20 w-11 h-11 rounded-full border border-white/30 bg-white/20 backdrop-blur-xl shadow-[0_10px_30px_rgba(36,49,31,0.16)] flex items-center justify-center"
         onClick={() => setIsMuted(!isMuted)}
@@ -163,14 +146,12 @@ export function Hero({ language }: HeroProps) {
         )}
       </motion.button>
 
-      {/* Content */}
       <div className="relative z-10 text-center px-4 py-20 max-w-5xl mx-auto">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1 }}
         >
-          {/* Decorative top line */}
           <motion.div
             className="flex items-center justify-center gap-4 mb-8"
             initial={{ scale: 0.85, opacity: 0 }}
@@ -182,10 +163,13 @@ export function Hero({ language }: HeroProps) {
             <div className="w-20 h-px bg-gradient-to-r from-transparent via-champagne to-transparent" />
           </motion.div>
 
-          {/* Names */}
           <motion.h1
-            className="text-6xl md:text-7xl lg:text-8xl font-light text-[#24311f] mb-5 leading-[1.02] drop-shadow-[0_2px_10px_rgba(255,255,255,0.18)]"
-            style={{ fontFamily: "var(--font-script), cursive" }}
+            className="text-6xl md:text-7xl lg:text-8xl text-[#24311f] mb-5 leading-[1.02] drop-shadow-[0_2px_10px_rgba(255,255,255,0.18)]"
+            style={{
+              fontFamily: '"Playfair Display", "Cormorant Garamond", serif',
+              fontWeight: 600,
+              letterSpacing: "0.02em",
+            }}
             initial={{ opacity: 0, y: 34 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.95, ease: [0.22, 1, 0.36, 1] }}
@@ -220,7 +204,6 @@ export function Hero({ language }: HeroProps) {
             </span>
           </motion.h1>
 
-          {/* Subtitle */}
           <motion.p
             className="text-base md:text-lg text-[#24311f]/80 mb-10 tracking-[0.28em] uppercase font-medium"
             initial={{ opacity: 0, y: 18 }}
@@ -229,19 +212,8 @@ export function Hero({ language }: HeroProps) {
           >
             {subtitle}
           </motion.p>
-
-          {/* Scratch to reveal date */}
-          <motion.div
-            className="inline-block"
-            initial={{ opacity: 0, scale: 0.92, y: 14 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ delay: 1, duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <ScratchDate text={date} />
-          </motion.div>
         </motion.div>
 
-        {/* Scroll Indicator */}
         <motion.div
           className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
           initial={{ opacity: 0 }}

@@ -39,7 +39,7 @@ export default function ScratchDate({ text }: ScratchDateProps) {
     const wrapper = wrapperRef.current
     if (!canvas || !wrapper) return
 
-    const ctx = canvas.getContext("2d")
+    const ctx = canvas.getContext("2d", { willReadFrequently: true })
     if (!ctx) return
 
     const setupCanvas = () => {
@@ -57,50 +57,73 @@ export default function ScratchDate({ text }: ScratchDateProps) {
       const width = rect.width
       const height = rect.height
 
-      // metallic gold foil gradient
-      const gradient = ctx.createLinearGradient(0, 0, width, height)
-      gradient.addColorStop(0, "#f5e7b2")
-      gradient.addColorStop(0.18, "#d7bb72")
-      gradient.addColorStop(0.36, "#fff2c7")
-      gradient.addColorStop(0.52, "#b48d3c")
-      gradient.addColorStop(0.72, "#e7cc86")
-      gradient.addColorStop(1, "#8f6a22")
-
       ctx.clearRect(0, 0, width, height)
+
+      // Rich metallic foil base
+      const gradient = ctx.createLinearGradient(0, 0, width, height)
+      gradient.addColorStop(0, "#fff0bf")
+      gradient.addColorStop(0.16, "#ddb85e")
+      gradient.addColorStop(0.34, "#fff5cf")
+      gradient.addColorStop(0.54, "#b8862d")
+      gradient.addColorStop(0.76, "#f0cf7d")
+      gradient.addColorStop(1, "#8c6318")
+
       ctx.fillStyle = gradient
       ctx.fillRect(0, 0, width, height)
 
-      // foil texture lines
-      for (let i = 0; i < 16; i++) {
-        const y = (height / 16) * i
-        ctx.strokeStyle = i % 2 === 0 ? "rgba(255,255,255,0.12)" : "rgba(90,60,20,0.08)"
-        ctx.lineWidth = 1
+      // Metallic wave texture
+      for (let i = 0; i < 18; i++) {
+        const y = (height / 18) * i
+        ctx.strokeStyle =
+          i % 2 === 0 ? "rgba(255,255,255,0.16)" : "rgba(77,53,16,0.10)"
+        ctx.lineWidth = 1.2
         ctx.beginPath()
         ctx.moveTo(0, y)
-        ctx.lineTo(width, y + 12)
+        ctx.bezierCurveTo(width * 0.25, y + 8, width * 0.75, y - 8, width, y + 6)
         ctx.stroke()
       }
 
-      // subtle vignette
+      // Sparkle dots on foil
+      for (let i = 0; i < 90; i++) {
+        ctx.fillStyle = `rgba(255,255,255,${Math.random() * 0.12})`
+        ctx.beginPath()
+        ctx.arc(
+          Math.random() * width,
+          Math.random() * height,
+          Math.random() * 1.6 + 0.4,
+          0,
+          Math.PI * 2
+        )
+        ctx.fill()
+      }
+
+      // Vignette
       const radial = ctx.createRadialGradient(
         width / 2,
         height / 2,
-        width * 0.12,
+        width * 0.08,
         width / 2,
         height / 2,
-        width * 0.75
+        width * 0.78
       )
-      radial.addColorStop(0, "rgba(255,255,255,0.10)")
-      radial.addColorStop(1, "rgba(0,0,0,0.10)")
+      radial.addColorStop(0, "rgba(255,255,255,0.12)")
+      radial.addColorStop(1, "rgba(0,0,0,0.16)")
       ctx.fillStyle = radial
       ctx.fillRect(0, 0, width, height)
 
-      // instruction text on foil
-      ctx.fillStyle = "rgba(70, 52, 18, 0.78)"
-      ctx.font = "600 14px var(--font-sans), serif"
+      // Stronger instruction text
       ctx.textAlign = "center"
       ctx.textBaseline = "middle"
-      ctx.fillText("Gently scratch to reveal", width / 2, height / 2)
+
+      // shadow/outline layer
+      ctx.fillStyle = "rgba(70,48,12,0.92)"
+      ctx.font = "700 15px Georgia, serif"
+      ctx.fillText("Scratch to Reveal Date", width / 2, height / 2 + 1)
+
+      // highlight layer
+      ctx.fillStyle = "rgba(255,248,222,0.92)"
+      ctx.font = "700 14px Georgia, serif"
+      ctx.fillText("Scratch to Reveal Date", width / 2, height / 2 - 1)
 
       ctx.globalCompositeOperation = "destination-out"
     }
@@ -109,6 +132,7 @@ export default function ScratchDate({ text }: ScratchDateProps) {
 
     let drawing = false
     let lastVibrateTime = 0
+    let lastSoundTime = 0
 
     const vibrateScratch = () => {
       const now = Date.now()
@@ -119,9 +143,11 @@ export default function ScratchDate({ text }: ScratchDateProps) {
     }
 
     const playScratchSound = () => {
-      if (!audioRef.current) return
+      const now = Date.now()
+      if (!audioRef.current || now - lastSoundTime < 120) return
       audioRef.current.currentTime = 0
       audioRef.current.play().catch(() => {})
+      lastSoundTime = now
     }
 
     const getPoint = (event: MouseEvent | TouchEvent) => {
@@ -142,31 +168,29 @@ export default function ScratchDate({ text }: ScratchDateProps) {
     }
 
     const scratch = (x: number, y: number) => {
-      const radius = 24
+      const radius = 26
 
       ctx.beginPath()
       ctx.arc(x, y, radius, 0, Math.PI * 2)
       ctx.fill()
 
-      // add trail
       ctx.beginPath()
-      ctx.arc(x, y, radius * 0.55, 0, Math.PI * 2)
+      ctx.arc(x, y, radius * 0.58, 0, Math.PI * 2)
       ctx.fill()
     }
 
     const checkReveal = () => {
-      const width = canvas.width
-      const height = canvas.height
-      const imageData = ctx.getImageData(0, 0, width, height)
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
       let transparentPixels = 0
 
       for (let i = 3; i < imageData.data.length; i += 4) {
-        if (imageData.data[i] === 0) transparentPixels++
+        if (imageData.data[i] < 20) transparentPixels++
       }
 
-      const percent = transparentPixels / (imageData.data.length / 4)
+      const totalPixels = imageData.data.length / 4
+      const percent = transparentPixels / totalPixels
 
-      if (percent > 0.38 && !revealed) {
+      if (percent > 0.34 && !revealed) {
         setRevealed(true)
         setShimmering(false)
 
@@ -185,17 +209,21 @@ export default function ScratchDate({ text }: ScratchDateProps) {
       if (revealed) return
       drawing = true
       setIsScratching(true)
-      playScratchSound()
       const point = getPoint(event)
+      if (!point) return
       scratch(point.x, point.y)
+      playScratchSound()
       vibrateScratch()
     }
 
     const handleMove = (event: MouseEvent | TouchEvent) => {
       if (!drawing || revealed) return
       const point = getPoint(event)
+      if (!point) return
       scratch(point.x, point.y)
+      playScratchSound()
       vibrateScratch()
+      checkReveal()
     }
 
     const handleEnd = () => {
@@ -236,7 +264,6 @@ export default function ScratchDate({ text }: ScratchDateProps) {
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
     >
-      {/* glass card underlay */}
       <motion.div
         className="relative overflow-hidden rounded-[2rem] border border-white/40 bg-white/18 backdrop-blur-2xl shadow-[0_20px_60px_rgba(36,49,31,0.18)] px-6 py-5"
         animate={
@@ -260,7 +287,7 @@ export default function ScratchDate({ text }: ScratchDateProps) {
           <div className="h-2 w-2 rounded-full bg-olive shadow-[0_0_10px_rgba(111,123,91,0.45)]" />
 
           <motion.span
-            className="text-[#24311f] font-medium tracking-[0.18em] text-sm md:text-base uppercase text-center"
+            className="text-[#24311f] font-semibold tracking-[0.18em] text-sm md:text-base uppercase text-center"
             initial={{ opacity: 0.7 }}
             animate={
               revealed
@@ -273,7 +300,7 @@ export default function ScratchDate({ text }: ScratchDateProps) {
                       "drop-shadow(0 0 0 rgba(200,178,125,0))",
                     ],
                   }
-                : { opacity: 0.65 }
+                : { opacity: 0.72 }
             }
             transition={{ duration: 1.1, ease: "easeInOut" }}
           >
@@ -295,7 +322,6 @@ export default function ScratchDate({ text }: ScratchDateProps) {
           )}
         </AnimatePresence>
 
-        {/* metallic shimmer over foil before reveal */}
         {!revealed && shimmering && (
           <motion.div
             className="pointer-events-none absolute inset-0 rounded-[2rem] bg-gradient-to-r from-transparent via-white/25 to-transparent"
@@ -309,17 +335,15 @@ export default function ScratchDate({ text }: ScratchDateProps) {
           />
         )}
 
-        {/* tiny helper text */}
         {!revealed && (
           <div className="pointer-events-none absolute inset-x-0 bottom-2 flex justify-center">
-            <span className="text-[10px] uppercase tracking-[0.24em] text-[#5c5032]/70">
+            <span className="text-[10px] font-semibold uppercase tracking-[0.24em] text-[#4c401d]/85">
               Reveal Our Date
             </span>
           </div>
         )}
       </motion.div>
 
-      {/* reveal sparkles */}
       <AnimatePresence>
         {revealed && (
           <div className="pointer-events-none absolute inset-0">
@@ -349,7 +373,6 @@ export default function ScratchDate({ text }: ScratchDateProps) {
         )}
       </AnimatePresence>
 
-      {/* reveal glow */}
       <AnimatePresence>
         {revealed && (
           <motion.div
@@ -362,7 +385,6 @@ export default function ScratchDate({ text }: ScratchDateProps) {
         )}
       </AnimatePresence>
 
-      {/* pressed effect while scratching */}
       <AnimatePresence>
         {isScratching && !revealed && (
           <motion.div

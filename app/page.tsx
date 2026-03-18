@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion"
 import { Envelope } from "@/components/wedding/envelope"
 import { Header } from "@/components/wedding/header"
 import { Hero } from "@/components/wedding/hero"
+import { DateReveal } from "@/components/wedding/date-reveal"
 import { Countdown } from "@/components/wedding/countdown"
 import { OurStory } from "@/components/wedding/our-story"
 import { PhotoGallery } from "@/components/wedding/photo-gallery"
@@ -48,7 +49,8 @@ export default function WeddingInvitation() {
           >
             <Header language={language} onLanguageChange={setLanguage} />
             <Hero language={language} />
-            <Countdown language={language} />
+<DateReveal language={language} />
+<Countdown language={language} />
             <OurStory language={language} />
             <PhotoGallery language={language} />
             <Events language={language} />
