@@ -1,8 +1,8 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { motion, useScroll, useTransform } from "framer-motion"
 import Image from "next/image"
-import { useMemo, useState } from "react"
+import { useMemo, useRef, useState } from "react"
 import { Volume2, VolumeX } from "lucide-react"
 
 interface HeroProps {
@@ -86,6 +86,24 @@ function SparkleParticles() {
 
 export function Hero({ language }: HeroProps) {
   const [isMuted, setIsMuted] = useState(true)
+  const sectionRef = useRef<HTMLElement>(null)
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  })
+
+  const bgScale = useTransform(scrollYProgress, [0, 1], [1.08, 1.18])
+  const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "10%"])
+  const bgBlur = useTransform(scrollYProgress, [0, 1], ["blur(0px)", "blur(10px)"])
+
+  const overlayOpacity = useTransform(scrollYProgress, [0, 1], [1, 1.15])
+
+  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "18%"])
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.85], [1, 0.35])
+
+  const nameFloatY = useTransform(scrollYProgress, [0, 1], [0, -18])
+  const subtitleY = useTransform(scrollYProgress, [0, 1], [0, -10])
 
   const content = {
     EN: {
@@ -102,26 +120,34 @@ export function Hero({ language }: HeroProps) {
 
   return (
     <section
+      ref={sectionRef}
       id="home"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-ivory via-cream to-sage/10"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#ece7d8]"
     >
+      {/* Background */}
       <motion.div
         className="absolute inset-0"
-        initial={{ scale: 1.08 }}
-        animate={{ scale: 1 }}
-        transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
+        style={{
+          scale: bgScale,
+          y: bgY,
+          filter: bgBlur,
+        }}
       >
         <Image
           src="/images/wedding-hero.JPG"
           alt="Wedding ceremony backdrop"
           fill
-          className="object-cover"
+          className="object-cover object-center"
           priority
         />
 
-        <div className="absolute inset-0 bg-gradient-to-b from-[#f5f0e6]/82 via-[#f5f0e6]/42 to-[#e8e2d6]/88" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#24311f]/34 via-transparent to-[#24311f]/22" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_30%,rgba(36,49,31,0.22)_100%)]" />
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-b from-[#f5f0e6]/40 via-[#f5f0e6]/12 to-[#ece7d8]/72"
+          style={{ opacity: overlayOpacity }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#24311f]/18 via-transparent to-[#24311f]/12" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_38%,rgba(36,49,31,0.12)_100%)]" />
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent via-[#ece7d8]/55 to-[#ece7d8]" />
       </motion.div>
 
       <FloatingPetals />
@@ -129,8 +155,9 @@ export function Hero({ language }: HeroProps) {
 
       <div className="pointer-events-none absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-champagne/10 to-transparent" />
 
+      {/* Music button */}
       <motion.button
-        className="absolute top-24 right-4 z-20 w-11 h-11 rounded-full border border-white/30 bg-white/20 backdrop-blur-xl shadow-[0_10px_30px_rgba(36,49,31,0.16)] flex items-center justify-center"
+        className="absolute top-24 right-4 z-20 w-11 h-11 rounded-full border border-white/35 bg-white/25 backdrop-blur-xl shadow-[0_10px_30px_rgba(36,49,31,0.14)] flex items-center justify-center"
         onClick={() => setIsMuted(!isMuted)}
         whileHover={{ scale: 1.06 }}
         whileTap={{ scale: 0.94 }}
@@ -140,87 +167,104 @@ export function Hero({ language }: HeroProps) {
         aria-label={isMuted ? "Unmute" : "Mute"}
       >
         {isMuted ? (
-          <VolumeX className="w-4 h-4 text-forest/85" />
+          <VolumeX className="w-4 h-4 text-[#24311f]/85" />
         ) : (
-          <Volume2 className="w-4 h-4 text-forest/85" />
+          <Volume2 className="w-4 h-4 text-[#24311f]/85" />
         )}
       </motion.button>
 
-      <div className="relative z-10 text-center px-4 py-20 max-w-5xl mx-auto">
+      {/* Content bottom aligned */}
+      <motion.div
+        className="relative z-10 w-full px-4 max-w-5xl mx-auto min-h-screen flex flex-col justify-end pb-24 md:pb-28"
+        style={{
+          y: contentY,
+          opacity: contentOpacity,
+        }}
+      >
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1 }}
+          className="text-center"
         >
           <motion.div
-            className="flex items-center justify-center gap-4 mb-8"
+            className="flex items-center justify-center gap-4 mb-6"
             initial={{ scale: 0.85, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="w-20 h-px bg-gradient-to-r from-transparent via-champagne to-transparent" />
+            <div className="w-16 h-px bg-gradient-to-r from-transparent via-champagne to-transparent" />
             <div className="w-3 h-3 rotate-45 border border-champagne bg-white/60 shadow-sm" />
-            <div className="w-20 h-px bg-gradient-to-r from-transparent via-champagne to-transparent" />
+            <div className="w-16 h-px bg-gradient-to-r from-transparent via-champagne to-transparent" />
           </motion.div>
 
           <motion.h1
-            className="text-6xl md:text-7xl lg:text-8xl text-[#24311f] mb-5 leading-[1.02] drop-shadow-[0_2px_10px_rgba(255,255,255,0.18)]"
+            className="text-5xl md:text-7xl lg:text-8xl mb-4 text-[#24311f]"
             style={{
-              fontFamily: '"Playfair Display", "Cormorant Garamond", serif',
-              fontWeight: 600,
-              letterSpacing: "0.02em",
+              fontFamily: "var(--font-script), cursive",
+              fontWeight: 400,
+              letterSpacing: "0.01em",
+              textShadow: "0 2px 10px rgba(255,255,255,0.18)",
+              y: nameFloatY,
             }}
-            initial={{ opacity: 0, y: 34 }}
+            initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.95, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ delay: 0.4, duration: 1, ease: [0.22, 1, 0.36, 1] }}
           >
-            <span className="inline-block">
-              <motion.span
-                initial={{ opacity: 0, x: -24 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.62, duration: 0.65 }}
-              >
-                Mirza
-              </motion.span>
-            </span>
-
             <motion.span
-              className="inline-block mx-4 text-[#c8b27d] drop-shadow-[0_2px_10px_rgba(200,178,125,0.35)]"
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 0.82, duration: 0.45, type: "spring" }}
+              className="inline-block"
+              animate={{ y: [0, -4, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            >
+              Mirza
+            </motion.span>{" "}
+            <motion.span
+              className="inline-block text-[#c8b27d] drop-shadow-[0_2px_10px_rgba(200,178,125,0.35)] mx-3"
+              animate={{ scale: [1, 1.06, 1], rotate: [0, 2, 0] }}
+              transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
             >
               &
+            </motion.span>{" "}
+            <motion.span
+              className="inline-block"
+              animate={{ y: [0, -4, 0] }}
+              transition={{ duration: 4, delay: 0.35, repeat: Infinity, ease: "easeInOut" }}
+            >
+              Jinsha
             </motion.span>
-
-            <span className="inline-block">
-              <motion.span
-                initial={{ opacity: 0, x: 24 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.62, duration: 0.65 }}
-              >
-                Jinsha
-              </motion.span>
-            </span>
           </motion.h1>
 
           <motion.p
-            className="text-base md:text-lg text-[#24311f]/80 mb-10 tracking-[0.28em] uppercase font-medium"
-            initial={{ opacity: 0, y: 18 }}
+            className="text-lg md:text-xl text-[#24311f]/78 uppercase"
+            style={{
+              fontFamily: "var(--font-cormorant), serif",
+              fontWeight: 600,
+              letterSpacing: "0.22em",
+              y: subtitleY,
+            }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.82, duration: 0.8 }}
+            transition={{ delay: 0.8, duration: 0.8 }}
           >
             {subtitle}
           </motion.p>
         </motion.div>
 
+        {/* Scroll indicator */}
         <motion.div
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
+          className="flex flex-col items-center mt-10"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.5, duration: 0.5 }}
+          transition={{ delay: 1.5 }}
         >
-          <span className="text-[#24311f]/50 text-[11px] tracking-[0.24em] uppercase">
+          <span
+            className="text-[#24311f]/50 text-[11px] uppercase"
+            style={{
+              fontFamily: "var(--font-cormorant), serif",
+              fontWeight: 600,
+              letterSpacing: "0.24em",
+            }}
+          >
             {scroll}
           </span>
 
@@ -228,16 +272,16 @@ export function Hero({ language }: HeroProps) {
             animate={{ y: [0, 8, 0] }}
             transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
           >
-            <div className="w-6 h-10 rounded-full border border-[#24311f]/30 bg-white/10 backdrop-blur-sm flex items-start justify-center p-2">
+            <div className="w-6 h-10 mt-2 rounded-full border border-[#24311f]/30 bg-white/10 backdrop-blur-sm flex items-start justify-center p-2">
               <motion.div
                 className="w-1 h-2 bg-olive rounded-full"
-                animate={{ y: [0, 8, 0], opacity: [1, 0.35, 1] }}
-                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                animate={{ y: [0, 8, 0], opacity: [1, 0.3, 1] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
               />
             </div>
           </motion.div>
         </motion.div>
-      </div>
+      </motion.div>
     </section>
   )
 }

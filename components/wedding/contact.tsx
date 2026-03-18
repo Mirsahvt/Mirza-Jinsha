@@ -33,7 +33,7 @@ export function Contact({ language }: ContactProps) {
 
   const { title, subtitle, openMap, callFamily, whatsappFamily, shareInvitation, footer, copyright } = content[language]
 
-  const phoneNumber = "+911234567890"
+  const phoneNumber = "+9715058577054"
   const mapUrl = "https://maps.google.com/?q=Rainbow+Convention+Centre+Keeramkundu+Malappuram+Kerala"
   const whatsappMessage = encodeURIComponent(
     language === "EN" 

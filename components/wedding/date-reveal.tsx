@@ -35,7 +35,7 @@ function ScratchCircle({ label, value, delay = 0 }: ScratchCircleProps) {
   )
 
   useEffect(() => {
-    audioRef.current = new Audio("/matimassa-fx-scratch-01-379214.mp3")
+    audioRef.current = new Audio("/matimassa-fx-scratch-01-379214.mp3   ")
     audioRef.current.volume = 0.28
   }, [])
 
@@ -68,7 +68,7 @@ function ScratchCircle({ label, value, delay = 0 }: ScratchCircleProps) {
       gradient.addColorStop(0, "#fff0bf")
       gradient.addColorStop(0.18, "#ddb85e")
       gradient.addColorStop(0.35, "#fff7d2")
-      gradient.addColorStop(0.58, "#b8862d")
+      gradient.addColorStop(0.58, "#c3861d")
       gradient.addColorStop(1, "#8a6218")
 
       ctx.fillStyle = gradient
