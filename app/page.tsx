@@ -55,10 +55,10 @@ export default function WeddingInvitation() {
             <PhotoGallery language={language} />
             <Events language={language} />
             <Venue language={language} />
-            <Timeline language={language} />
+            
             <DressCode language={language} />
             <FAQ language={language} />
-            <RSVP language={language} />
+            
             <Contact language={language} />
           </motion.div>
         )}
