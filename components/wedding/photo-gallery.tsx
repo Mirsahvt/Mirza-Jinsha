@@ -1,6 +1,11 @@
 "use client"
 
-import { motion, useScroll, useTransform, useMotionValueEvent } from "framer-motion"
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useMotionValueEvent,
+} from "framer-motion"
 import Image from "next/image"
 import { useRef } from "react"
 
@@ -16,393 +21,340 @@ function vibrateSoft(pattern: number | number[] = [10, 25, 10]) {
 
 export function PhotoGallery({ language }: PhotoGalleryProps) {
   const sectionRef = useRef<HTMLDivElement>(null)
+  const groomVibratedRef = useRef(false)
+  const brideVibratedRef = useRef(false)
   const coupleVibratedRef = useRef(false)
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ["start center", "end center"],
+    offset: ["start start", "end end"],
   })
 
   const content = {
     EN: {
       title: "Meet the Couple",
-      groom: "The Groom",
-      bride: "The Bride",
-      together: "Together Forever",
-      arabicQuote:
-        "وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً",
+      groomLabel: "The Groom",
+      brideLabel: "The Bride",
+      coupleLabel: "United in Christ",
+      groomName: "Stebin",
+      brideName: "Jesna Jose",
+      coupleName: "Stebin & Jesna",
+      quote:
+        '"Therefore what God has joined together, let no one separate." — Mark 10:9',
     },
     ES: {
       title: "Conoce a la Pareja",
-      groom: "El Novio",
-      bride: "La Novia",
-      together: "Juntos Para Siempre",
-      arabicQuote:
-        "وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً",
+      groomLabel: "El Novio",
+      brideLabel: "La Novia",
+      coupleLabel: "Unidos en Cristo",
+      groomName: "Stebin",
+      brideName: "Jesna Jose",
+      coupleName: "Stebin & Jesna",
+      quote:
+        '"Therefore what God has joined together, let no one separate." — Mark 10:9',
     },
   }
 
-  const { title, groom, bride, together, arabicQuote } = content[language]
+  const {
+    title,
+    groomLabel,
+    brideLabel,
+    coupleLabel,
+    groomName,
+    brideName,
+    coupleName,
+    quote,
+  } = content[language]
 
-  const bgScale = useTransform(scrollYProgress, [0, 1], [1, 1.05])
+  // Groom: enters from left
+  const groomOpacity = useTransform(
+    scrollYProgress,
+    [0.03, 0.10, 0.28, 0.38],
+    [0, 1, 1, 0]
+  )
+  const groomScale = useTransform(
+    scrollYProgress,
+    [0.03, 0.12, 0.38],
+    [0.92, 1, 1.03]
+  )
+  const groomX = useTransform(
+    scrollYProgress,
+    [0.03, 0.12, 0.38],
+    [-140, 0, 18]
+  )
+  const groomBlur = useTransform(
+    scrollYProgress,
+    [0.03, 0.12, 0.38],
+    [16, 0, 10]
+  )
 
-  const groomX = useTransform(scrollYProgress, [0.14, 0.32], ["0%", "28%"])
-  const brideX = useTransform(scrollYProgress, [0.14, 0.32], ["0%", "-28%"])
-  const sideY = useTransform(scrollYProgress, [0.14, 0.32], [0, -24])
-  const sideScale = useTransform(scrollYProgress, [0.14, 0.32], [1, 0.82])
-  const sideOpacity = useTransform(scrollYProgress, [0.14, 0.32], [1, 0.1])
-  const sideBlur = useTransform(scrollYProgress, [0.14, 0.32], [0, 16])
+  // Bride: enters from right
+  const brideOpacity = useTransform(
+    scrollYProgress,
+    [0.34, 0.44, 0.60, 0.72],
+    [0, 1, 1, 0]
+  )
+  const brideScale = useTransform(
+    scrollYProgress,
+    [0.34, 0.46, 0.72],
+    [0.92, 1, 1.03]
+  )
+  const brideX = useTransform(
+    scrollYProgress,
+    [0.34, 0.46, 0.72],
+    [140, 0, -18]
+  )
+  const brideBlur = useTransform(
+    scrollYProgress,
+    [0.34, 0.46, 0.72],
+    [16, 0, 10]
+  )
 
-  const coupleY = useTransform(scrollYProgress, [0.26, 0.44], [110, 0])
-  const coupleScale = useTransform(scrollYProgress, [0.26, 0.44], [0.76, 1])
-  const coupleOpacity = useTransform(scrollYProgress, [0.26, 0.4], [0, 1])
-  const coupleGlow = useTransform(scrollYProgress, [0.3, 0.46], [0, 1])
+  // Couple: fades from center with luxury feel
+  const coupleOpacity = useTransform(
+    scrollYProgress,
+    [0.68, 0.80, 1],
+    [0, 1, 1]
+  )
+  const coupleScale = useTransform(
+    scrollYProgress,
+    [0.68, 0.82, 1],
+    [0.88, 1, 1.02]
+  )
+  const coupleY = useTransform(
+    scrollYProgress,
+    [0.68, 0.82, 1],
+    [28, 0, 0]
+  )
+  const coupleBlur = useTransform(
+    scrollYProgress,
+    [0.68, 0.82, 1],
+    [18, 0, 0]
+  )
+
+  const quoteOpacity = useTransform(scrollYProgress, [0.84, 0.92, 1], [0, 1, 1])
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    if (latest > 0.18 && !coupleVibratedRef.current) {
-      vibrateSoft([12, 30, 12])
+    if (latest > 0.08 && !groomVibratedRef.current) {
+      vibrateSoft([10, 20, 10])
+      groomVibratedRef.current = true
+    }
+    if (latest > 0.42 && !brideVibratedRef.current) {
+      vibrateSoft([10, 20, 10])
+      brideVibratedRef.current = true
+    }
+    if (latest > 0.78 && !coupleVibratedRef.current) {
+      vibrateSoft([12, 24, 12])
       coupleVibratedRef.current = true
     }
 
-    if (latest < 0.06) {
-      coupleVibratedRef.current = false
-    }
+    if (latest < 0.04) groomVibratedRef.current = false
+    if (latest < 0.30) brideVibratedRef.current = false
+    if (latest < 0.64) coupleVibratedRef.current = false
   })
 
   return (
     <section
       id="gallery"
       ref={sectionRef}
-      className="relative h-[115vh] overflow-hidden bg-gradient-to-b from-[#f4efe5] via-[#ece7da] to-[#dfe6d5]"
+      className="relative h-[310vh]"
+      style={{
+        background:
+          "linear-gradient(to bottom, #f8dfe6 0%, #f6e7e1 18%, #efe3db 38%, #f6ece6 60%, #f9e8ec 84%, #f7dbe3 100%)",
+      }}
     >
-      <motion.div
-        className="absolute inset-0 pointer-events-none"
-        style={{ scale: bgScale }}
-      >
-        <div className="absolute top-0 left-[10%] w-60 h-60 rounded-full bg-sage/18 blur-3xl" />
-        <div className="absolute bottom-0 right-[10%] w-60 h-60 rounded-full bg-champagne/18 blur-3xl" />
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-52 h-52 rounded-full bg-olive/10 blur-3xl" />
-      </motion.div>
+      {/* background */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#f7dbe3] via-[#f5e6df]/70 to-transparent" />
+        <div className="absolute left-[7%] top-20 h-80 w-80 rounded-full bg-white/20 blur-3xl" />
+        <div className="absolute right-[8%] top-1/4 h-80 w-80 rounded-full bg-[#f7c6d9]/14 blur-3xl" />
+        <div className="absolute bottom-16 left-1/2 h-96 w-96 -translate-x-1/2 rounded-full bg-[#f4d2dc]/18 blur-3xl" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.25),transparent_38%)]" />
+      </div>
 
       <div className="sticky top-0 h-screen overflow-hidden">
-        <div className="container mx-auto px-4 h-full relative z-10">
-          <motion.div
-            className="text-center pt-10 md:pt-16 mb-4"
-            initial={{ opacity: 0, y: 30, filter: "blur(8px)" }}
-            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <h2
-              className="text-4xl md:text-5xl font-light text-[#24311f]"
-              style={{ fontFamily: "var(--font-script), cursive" }}
+        {/* title sticky on top */}
+        <div className="absolute inset-x-0 top-0 z-30">
+          <div className="mx-auto flex w-full max-w-6xl justify-center px-4 pt-8 md:pt-10">
+            <motion.div
+              initial={{ opacity: 0, y: 24, filter: "blur(8px)" }}
+              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+              className="text-center"
             >
-              {title}
-            </h2>
-          </motion.div>
-
-          <div className="relative h-[calc(100vh-90px)] max-w-md md:max-w-6xl mx-auto">
-            {/* MOBILE / TABLET */}
-            <div className="md:hidden relative h-full">
-              {/* Groom */}
-              <motion.div
-                className="absolute left-0 top-[42%] w-[56%] -translate-y-1/2"
-                style={{
-                  x: groomX,
-                  y: sideY,
-                  scale: sideScale,
-                  opacity: sideOpacity,
-                  filter: useTransform(sideBlur, (v) => `blur(${v}px)`),
-                }}
-              >
-                <div className="relative aspect-[3/4] overflow-hidden rounded-[2rem] border border-white/35 bg-white/15 backdrop-blur-xl shadow-[0_18px_50px_rgba(36,49,31,0.14)]">
-                  <Image src="images/WhatsApp Image 2026-03-18 at 4.15.26 PM (1).jpeg" alt="Mirza" fill className="object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#24311f]/78 via-[#24311f]/15 to-transparent" />
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/12 via-transparent to-champagne/10" />
-
-                  <div className="absolute top-4 left-4 w-7 h-7 border-t-2 border-l-2 border-champagne/70 rounded-tl-lg" />
-                  <div className="absolute top-4 right-4 w-7 h-7 border-t-2 border-r-2 border-champagne/70 rounded-tr-lg" />
-                  <div className="absolute bottom-16 left-4 w-7 h-7 border-b-2 border-l-2 border-champagne/70 rounded-bl-lg" />
-                  <div className="absolute bottom-16 right-4 w-7 h-7 border-b-2 border-r-2 border-champagne/70 rounded-br-lg" />
-
-                  <div className="absolute bottom-0 left-0 right-0 p-5 text-center">
-                    <p className="text-ivory/75 text-[10px] tracking-[0.22em] uppercase mb-1">
-                      {groom}
-                    </p>
-                    <h3
-                      className="text-ivory text-xl font-medium"
-                      style={{ fontFamily: "var(--font-script), cursive" }}
-                    >
-                      Mirza
-                    </h3>
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Bride */}
-              <motion.div
-                className="absolute right-0 top-[42%] w-[56%] -translate-y-1/2"
-                style={{
-                  x: brideX,
-                  y: sideY,
-                  scale: sideScale,
-                  opacity: sideOpacity,
-                  filter: useTransform(sideBlur, (v) => `blur(${v}px)`),
-                }}
-              >
-                <div className="relative aspect-[3/4] overflow-hidden rounded-[2rem] border border-white/35 bg-white/15 backdrop-blur-xl shadow-[0_18px_50px_rgba(36,49,31,0.14)]">
-                  <Image src="/images/WhatsApp Image 2026-03-18 at 4.15.26 PM (2).jpeg" alt="Jinsha" fill className="object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#24311f]/78 via-[#24311f]/15 to-transparent" />
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/12 via-transparent to-champagne/10" />
-
-                  <div className="absolute top-4 left-4 w-7 h-7 border-t-2 border-l-2 border-champagne/70 rounded-tl-lg" />
-                  <div className="absolute top-4 right-4 w-7 h-7 border-t-2 border-r-2 border-champagne/70 rounded-tr-lg" />
-                  <div className="absolute bottom-16 left-4 w-7 h-7 border-b-2 border-l-2 border-champagne/70 rounded-bl-lg" />
-                  <div className="absolute bottom-16 right-4 w-7 h-7 border-b-2 border-r-2 border-champagne/70 rounded-br-lg" />
-
-                  <div className="absolute bottom-0 left-0 right-0 p-5 text-center">
-                    <p className="text-ivory/75 text-[10px] tracking-[0.22em] uppercase mb-1">
-                      {bride}
-                    </p>
-                    <h3
-                      className="text-ivory text-xl font-medium"
-                      style={{ fontFamily: "var(--font-script), cursive" }}
-                    >
-                      Jinsha
-                    </h3>
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Couple */}
-              <motion.div
-                className="absolute left-1/2 top-[42%] w-[76%] -translate-x-1/2 -translate-y-1/2"
-                style={{
-                  y: coupleY,
-                  scale: coupleScale,
-                  opacity: coupleOpacity,
-                }}
-              >
-                <motion.div
-                  className="relative aspect-[4/5] overflow-hidden rounded-[2.2rem] border border-white/40 bg-white/18 backdrop-blur-2xl shadow-[0_24px_70px_rgba(36,49,31,0.18)]"
-                  animate={{
-                    boxShadow: [
-                      "0 24px 70px rgba(36,49,31,0.12)",
-                      "0 24px 80px rgba(200,178,125,0.22)",
-                      "0 24px 70px rgba(36,49,31,0.18)",
-                    ],
-                  }}
-                  transition={{
-                    duration: 2.4,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                >
-                  <motion.div
-                    className="absolute -inset-4 rounded-[2.6rem] bg-gradient-to-r from-transparent via-champagne/20 to-transparent blur-2xl pointer-events-none"
-                    style={{ opacity: coupleGlow }}
-                  />
-
-                  <Image
-                    src="/images/WhatsApp Image 2026-03-18 at 4.15.25 PM.jpeg"
-                    alt="Mirza & Jinsha"
-                    fill
-                    className="object-cover"
-                  />
-
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#24311f]/82 via-[#24311f]/18 to-transparent" />
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/14 via-transparent to-champagne/12" />
-
-                  <div className="absolute top-5 left-5 w-9 h-9 border-t-2 border-l-2 border-champagne/75 rounded-tl-xl" />
-                  <div className="absolute top-5 right-5 w-9 h-9 border-t-2 border-r-2 border-champagne/75 rounded-tr-xl" />
-                  <div className="absolute bottom-20 left-5 w-9 h-9 border-b-2 border-l-2 border-champagne/75 rounded-bl-xl" />
-                  <div className="absolute bottom-20 right-5 w-9 h-9 border-b-2 border-r-2 border-champagne/75 rounded-br-xl" />
-
-                  <div className="absolute bottom-0 left-0 right-0 p-6 text-center">
-                    <p className="text-ivory/80 text-[10px] tracking-[0.28em] uppercase mb-2">
-                      {together}
-                    </p>
-                    <h3
-                      className="text-ivory text-3xl font-medium"
-                      style={{ fontFamily: "var(--font-script), cursive" }}
-                    >
-                      Mirza & Jinsha
-                    </h3>
-                  </div>
-                </motion.div>
-              </motion.div>
-
-              {/* Arabic Quote Below Section */}
-              <motion.div
-                className="absolute bottom-10 left-1/2 -translate-x-1/2 text-center px-6 w-full max-w-[360px]"
-                initial={{ opacity: 0, y: 24, filter: "blur(8px)" }}
-                whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                viewport={{ once: true }}
-                transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <motion.p
-                  dir="rtl"
-                  className="text-[22px] font-bold leading-11"
-                  style={{
-                    fontFamily: "'Amiri', 'Noto Naskh Arabic', serif",
-                    background:
-                      "linear-gradient(180deg, #f8ebbe 0%, #dfc27a 38%, #c99a3c 68%, #b27a23 100%)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    textShadow: "0 0 18px rgba(212,181,106,0.22)",
-                    letterSpacing: "0.02em",
-                  }}
-                  initial={{ opacity: 0, y: 22, scale: 0.96, filter: "blur(8px)" }}
-                  whileInView={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
-                  viewport={{ once: true }}
-                  animate={{
-                    textShadow: [
-                      "0 0 8px rgba(212,181,106,0.10)",
-                      "0 0 22px rgba(212,181,106,0.35)",
-                      "0 0 12px rgba(212,181,106,0.16)",
-                    ],
-                    opacity: [0.9, 1, 0.92],
-                  }}
-                  transition={{
-                    opacity: { duration: 0.9, ease: [0.22, 1, 0.36, 1] },
-                    y: { duration: 0.9, ease: [0.22, 1, 0.36, 1] },
-                    scale: { duration: 0.9, ease: [0.22, 1, 0.36, 1] },
-                    filter: { duration: 0.9, ease: [0.22, 1, 0.36, 1] },
-                    textShadow: { duration: 3, repeat: Infinity, ease: "easeInOut" },
-                  }}
-                >
-                  {arabicQuote}
-                </motion.p>
-
-                <motion.p
-                  className="mt-3 text-[11px] tracking-[0.28em] uppercase text-[#24311f]/60 font-medium"
-                  initial={{ opacity: 0, y: 8 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, delay: 0.15 }}
-                >
-                  Qur'an 30:21
-                </motion.p>
-              </motion.div>
-            </div>
-
-            {/* Desktop simple layout */}
-            <div className="hidden md:flex flex-col items-center justify-center h-full">
-              <div className="flex items-center justify-center gap-8 w-full">
-                {[
-                  { src: "/images/groom.jpg", label: groom, name: "Mirza" },
-                  {
-                    src: "/images/couple.jpg",
-                    label: together,
-                    name: "Mirza & Jinsha",
-                    featured: true,
-                  },
-                  { src: "/images/bride.jpg", label: bride, name: "Jinsha" },
-                ].map((photo, index) => (
-                  <motion.div
-                    key={photo.label}
-                    initial={{ opacity: 0, y: 40, filter: "blur(8px)" }}
-                    whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                    viewport={{ once: true }}
-                    transition={{
-                      duration: 0.75,
-                      delay: index * 0.12,
-                      ease: [0.22, 1, 0.36, 1],
-                    }}
-                    className={`relative ${photo.featured ? "w-[36%]" : "w-[26%]"}`}
-                  >
-                    <motion.div
-                      className={`relative overflow-hidden rounded-[2rem] border border-white/35 bg-white/15 backdrop-blur-xl shadow-[0_18px_50px_rgba(36,49,31,0.14)] group ${
-                        photo.featured ? "aspect-[4/5]" : "aspect-[3/4]"
-                      }`}
-                      whileHover={{ y: -6, scale: 1.02 }}
-                      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                    >
-                      <Image
-                        src={photo.src}
-                        alt={photo.name}
-                        fill
-                        className="object-cover transition-transform duration-700 group-hover:scale-105"
-                      />
-
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#24311f]/72 via-[#24311f]/12 to-transparent" />
-                      <div className="absolute inset-0 bg-gradient-to-br from-white/12 via-transparent to-champagne/10" />
-
-                      <div className="absolute top-4 left-4 w-8 h-8 border-t-2 border-l-2 border-champagne/70 rounded-tl-lg" />
-                      <div className="absolute top-4 right-4 w-8 h-8 border-t-2 border-r-2 border-champagne/70 rounded-tr-lg" />
-                      <div className="absolute bottom-16 left-4 w-8 h-8 border-b-2 border-l-2 border-champagne/70 rounded-bl-lg" />
-                      <div className="absolute bottom-16 right-4 w-8 h-8 border-b-2 border-r-2 border-champagne/70 rounded-br-lg" />
-
-                      <div className="absolute bottom-0 left-0 right-0 p-6 text-center">
-                        <p className="text-ivory/75 text-xs tracking-[0.25em] uppercase mb-1">
-                          {photo.label}
-                        </p>
-                        <h3
-                          className={`${photo.featured ? "text-2xl" : "text-xl"} text-ivory font-medium`}
-                          style={{ fontFamily: "var(--font-script), cursive" }}
-                        >
-                          {photo.name}
-                        </h3>
-                      </div>
-                    </motion.div>
-                  </motion.div>
-                ))}
+              <div className="mb-4 flex items-center justify-center gap-3">
+                <div className="h-px w-14 bg-gradient-to-r from-transparent via-[#caa78d] to-transparent" />
+                <div className="h-2.5 w-2.5 rotate-45 border border-[#d7b89a]/80 bg-white/60 shadow-[0_0_12px_rgba(255,255,255,0.35)]" />
+                <div className="h-px w-14 bg-gradient-to-r from-transparent via-[#caa78d] to-transparent" />
               </div>
 
-              <motion.div
-                className="mt-8 text-center px-6 max-w-3xl"
-                initial={{ opacity: 0, y: 24, filter: "blur(8px)" }}
-                whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                viewport={{ once: true }}
-                transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+              <h2
+                className="text-3xl text-[#3b2d28] sm:text-4xl md:text-5xl"
+                style={{
+                  fontFamily: "var(--font-script), cursive",
+                  textShadow:
+                    "0 1px 0 rgba(255,255,255,0.82), 0 4px 14px rgba(132,102,79,0.10)",
+                }}
               >
-                <motion.p
-                  dir="rtl"
-                  className="text-[22px] font-bold leading-10"
-                  style={{
-                    fontFamily: "'Amiri', 'Noto Naskh Arabic', serif",
-                    background:
-                      "linear-gradient(180deg, #f8ebbe 0%, #dfc27a 38%, #c99a3c 68%, #b27a23 100%)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    textShadow: "0 0 18px rgba(212,181,106,0.22)",
-                    letterSpacing: "0.02em",
-                  }}
-                  initial={{ opacity: 0, y: 22, scale: 0.96, filter: "blur(8px)" }}
-                  whileInView={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
-                  viewport={{ once: true }}
-                  animate={{
-                    textShadow: [
-                      "0 0 8px rgba(212,181,106,0.10)",
-                      "0 0 22px rgba(212,181,106,0.35)",
-                      "0 0 12px rgba(212,181,106,0.16)",
-                    ],
-                    opacity: [0.9, 1, 0.92],
-                  }}
-                  transition={{
-                    opacity: { duration: 0.9, ease: [0.22, 1, 0.36, 1] },
-                    y: { duration: 0.9, ease: [0.22, 1, 0.36, 1] },
-                    scale: { duration: 0.9, ease: [0.22, 1, 0.36, 1] },
-                    filter: { duration: 0.9, ease: [0.22, 1, 0.36, 1] },
-                    textShadow: { duration: 3, repeat: Infinity, ease: "easeInOut" },
-                  }}
-                >
-                  {arabicQuote}
-                </motion.p>
+                {title}
+              </h2>
+            </motion.div>
+          </div>
+        </div>
 
-                <motion.p
-                  className="mt-3 text-[11px] tracking-[0.28em] uppercase text-[#24311f]/60 font-medium"
-                  initial={{ opacity: 0, y: 8 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, delay: 0.15 }}
-                >
-                  Qur'an 30:21
-                </motion.p>
+        {/* bigger centered frame */}
+        <div className="absolute inset-0 flex items-center justify-center px-4">
+          <div className="relative w-[84vw] max-w-[360px] sm:max-w-[420px] md:max-w-[500px] lg:max-w-[560px]">
+            <div
+              className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] border border-white/55 shadow-[0_30px_90px_rgba(103,83,67,0.16)]"
+              style={{
+                background:
+                  "linear-gradient(180deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.16) 100%)",
+                WebkitBackdropFilter: "blur(20px) saturate(160%)",
+                backdropFilter: "blur(20px) saturate(160%)",
+                boxShadow:
+                  "0 30px 90px rgba(103,83,67,0.16), inset 0 1px 0 rgba(255,255,255,0.68)",
+              }}
+            >
+              <div className="absolute inset-0 z-[1] bg-[linear-gradient(135deg,rgba(255,255,255,0.18),rgba(255,255,255,0.03)_42%,transparent_64%)]" />
+              <div className="absolute left-6 right-6 top-0 z-[2] h-px bg-gradient-to-r from-transparent via-[#d7b89a]/65 to-transparent" />
+
+              <div className="absolute left-6 top-6 z-[2] h-6 w-6 rounded-tl border-l border-t border-[#d7b89a]/40" />
+              <div className="absolute right-6 top-6 z-[2] h-6 w-6 rounded-tr border-r border-t border-[#d7b89a]/40" />
+              <div className="absolute bottom-6 left-6 z-[2] h-6 w-6 rounded-bl border-b border-l border-[#d7b89a]/40" />
+              <div className="absolute bottom-6 right-6 z-[2] h-6 w-6 rounded-br border-b border-r border-[#d7b89a]/40" />
+
+              {/* groom */}
+              <motion.div
+                className="absolute inset-0 z-0"
+                style={{
+                  opacity: groomOpacity,
+                  scale: groomScale,
+                  x: groomX,
+                  filter: useTransform(groomBlur, (v) => `blur(${v}px)`),
+                }}
+              >
+                <Image
+                  src="/images/groom.png"
+                  alt="Groom portrait"
+                  fill
+                  priority
+                  className="object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#2d201c]/82 via-[#2d201c]/15 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 z-[2] p-6 text-center md:p-8">
+                  <p className="mb-2 text-[10px] uppercase tracking-[0.26em] text-white/75 md:text-[11px]">
+                    {groomLabel}
+                  </p>
+                  <h3
+                    className="text-3xl text-white md:text-4xl"
+                    style={{ fontFamily: "var(--font-script), cursive" }}
+                  >
+                    {groomName}
+                  </h3>
+                  <p className="mt-2 text-sm text-white/80 md:text-[15px]">
+                    Xavier & Teresa
+                  </p>
+                </div>
+              </motion.div>
+
+              {/* bride */}
+              <motion.div
+                className="absolute inset-0 z-0"
+                style={{
+                  opacity: brideOpacity,
+                  scale: brideScale,
+                  x: brideX,
+                  filter: useTransform(brideBlur, (v) => `blur(${v}px)`),
+                }}
+              >
+                <Image
+                  src="/images/bride.png"
+                  alt="Bride portrait"
+                  fill
+                  className="object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#2d201c]/82 via-[#2d201c]/15 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 z-[2] p-6 text-center md:p-8">
+                  <p className="mb-2 text-[10px] uppercase tracking-[0.26em] text-white/75 md:text-[11px]">
+                    {brideLabel}
+                  </p>
+                  <h3
+                    className="text-3xl text-white md:text-4xl"
+                    style={{ fontFamily: "var(--font-script), cursive" }}
+                  >
+                    {brideName}
+                  </h3>
+                  <p className="mt-2 text-sm text-white/80 md:text-[15px]">
+                    Joseph M.D. & Mary Jose
+                  </p>
+                </div>
+              </motion.div>
+
+              {/* couple */}
+              <motion.div
+                className="absolute inset-0 z-0"
+                style={{
+                  opacity: coupleOpacity,
+                  scale: coupleScale,
+                  y: coupleY,
+                  filter: useTransform(coupleBlur, (v) => `blur(${v}px)`),
+                }}
+              >
+                <Image
+                  src="/images/couple.png"
+                  alt="Couple portrait"
+                  fill
+                  className="object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#2d201c]/84 via-[#2d201c]/16 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 z-[2] p-6 text-center md:p-8">
+                  <p className="mb-2 text-[10px] uppercase tracking-[0.28em] text-white/75 md:text-[11px]">
+                    {coupleLabel}
+                  </p>
+                  <h3
+                    className="text-3xl text-white md:text-5xl"
+                    style={{ fontFamily: "var(--font-script), cursive" }}
+                  >
+                    {coupleName}
+                  </h3>
+                </div>
               </motion.div>
             </div>
           </div>
         </div>
+
+        {/* christian quote */}
+        <motion.div
+          className="pointer-events-none absolute inset-x-0 bottom-8 z-20 mx-auto max-w-3xl px-4 md:bottom-10"
+          style={{ opacity: quoteOpacity }}
+        >
+          <div
+            className="relative mx-auto max-w-[850px] overflow-hidden rounded-[1.8rem] border border-white/55 px-5 py-5 text-center shadow-[0_20px_60px_rgba(110,87,73,0.10)] backdrop-blur-2xl md:px-10 md:py-6"
+            style={{
+              background:
+                "linear-gradient(180deg, rgba(255,255,255,0.36) 0%, rgba(255,255,255,0.18) 100%)",
+              WebkitBackdropFilter: "blur(18px) saturate(160%)",
+              backdropFilter: "blur(18px) saturate(160%)",
+              boxShadow:
+                "0 20px 60px rgba(110,87,73,0.10), inset 0 1px 0 rgba(255,255,255,0.62)",
+            }}
+          >
+            <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.22),rgba(255,255,255,0.04)_38%,transparent_64%)]" />
+            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#d7b89a]/70 to-transparent" />
+            <p
+              className="relative text-base italic text-[#4d3d37] md:text-[1.25rem]"
+              style={{
+                fontFamily: '"Cormorant Garamond", serif',
+                lineHeight: 1.7,
+                textShadow: "0 1px 0 rgba(255,255,255,0.45)",
+              }}
+            >
+              {quote}
+            </p>
+          </div>
+        </motion.div>
       </div>
     </section>
   )

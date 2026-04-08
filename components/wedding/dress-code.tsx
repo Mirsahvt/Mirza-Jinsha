@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Sparkles, MoonStar, Music2, Crown, Check } from "lucide-react"
+import { Shirt, Sparkles, Cross, HeartHandshake } from "lucide-react"
 
 interface DressCodeProps {
   language: "ES" | "EN"
@@ -10,380 +10,285 @@ interface DressCodeProps {
 export function DressCode({ language }: DressCodeProps) {
   const content = {
     EN: {
-      title: "Dress Code",
-      subtitle: "A style guide for each celebration",
-      noteTitle: "Kindly follow the palette",
+      title: "Dress Code & Blessings",
+      subtitle:
+        "A gentle note on attire, and a warm message from the groom’s side with love in Christ.",
+      dressTitle: "Dress Code",
+      dressText:
+        "Guests are welcome to wear any elegant color that beautifully complements the Groom.",
+      menTitle: "For Men",
+      menText: "Mundu and Kurta will be especially appreciated.",
+      ladiesTitle: "For Ladies",
+      ladiesText:
+        "Any graceful and elegant attire in beautiful tones is warmly welcome.",
+      noteTitle: "A Loving Note",
       noteText:
-        "To keep each celebration visually elegant and beautifully coordinated, we invite our guests to follow the suggested colors for each day.",
-      sections: [
-        {
-          icon: MoonStar,
-          day: "Nikah Day",
-          date: "25 April 2026 · Morning",
-          vibe: "Soft, serene, elegant",
-          attire: "Pastel elegance / graceful traditional",
-          description:
-            "Since we will be wearing off-white, guests are requested to choose soft pastel and light neutral tones.",
-          wear: [
-            "Champagne Beige",
-            "Blush Pink",
-            "Sage Green",
-            "Powder Blue",
-            "Light Grey",
-            "Soft Ivory",
-          ],
-          avoid: ["Pure White", "Black", "Neon Shades"],
-          chipColors: [
-            "bg-[#d9c7a4]",
-            "bg-[#e8c8c8]",
-            "bg-[#b8c4ad]",
-            "bg-[#c8d6e8]",
-            "bg-[#d8d8d8]",
-            "bg-[#f1eadc]",
-          ],
-        },
-        {
-          icon: Music2,
-          day: "Sangeeth Night",
-          date: "25 April 2026 · Evening",
-          vibe: "Royal, festive, vibrant",
-          attire: "Jewel tones / festive glamour",
-          description:
-            "Since we will be wearing champagne-gold and dark olive green, guests are requested to choose rich festive shades that do not overlap with the couple’s palette, so the bride and groom remain the visual highlight.",
-          wear: [
-            "Wine",
-            "Maroon",
-            "Navy Blue",
-            "Deep Purple",
-            "Plum",
-            "Midnight Blue",
-          ],
-          avoid: [
-            "Green Shades",
-            "Olive",
-            "Brown Tones",
-            "Champagne Gold",
-            "Beige",
-          ],
-          chipColors: [
-            "bg-[#6b1f34]",
-            "bg-[#7a2330]",
-            "bg-[#203c73]",
-            "bg-[#5f3b78]",
-            "bg-[#6f3d6d]",
-            "bg-[#1f2f4f]",
-          ],
-        },
-        {
-          icon: Crown,
-          day: "Reception Day",
-          date: "26 April 2026 · Grand Celebration",
-          vibe: "Formal, luxurious, evening chic",
-          attire: "Elegant formal / evening luxury",
-          description:
-            "Since the bride will be wearing red and the groom black, guests are requested to select refined evening tones that allow the couple to remain the visual focus.",
-          wear: [
-            "Metallic Gold",
-            "Bronze",
-            "Beige",
-            "Deep Navy",
-            "Charcoal Grey",
-            "Taupe",
-          ],
-          avoid: ["Black", "Bright Red", "Neon Colors", "Heavy Red-Black Match"],
-          chipColors: [
-            "bg-[#c7a34b]",
-            "bg-[#8d6238]",
-            "bg-[#dcc8ae]",
-            "bg-[#22345a]",
-            "bg-[#52565c]",
-            "bg-[#9b8a7a]",
-          ],
-        },
-      ],
+        "With joyful hearts in Christ, we warmly invite you to be part of our blessed celebration. Your presence, prayers, and blessings mean so much to us and to our families.",
+      quoteTitle: "A Christian Blessing",
+      quote:
+        "“This is the day that the Lord has made; let us rejoice and be glad in it.”",
+      verse: "Psalm 118:24",
+      footer:
+        "Come celebrate love, faith, and togetherness with us on this special day.",
     },
     ES: {
-      title: "Código de Vestimenta",
-      subtitle: "Una guía de estilo para cada celebración",
-      noteTitle: "Sugerimos seguir la paleta",
+      title: "Dress Code & Blessings",
+      subtitle:
+        "A gentle note on attire, and a warm message from the groom’s side with love in Christ.",
+      dressTitle: "Dress Code",
+      dressText:
+        "Guests are welcome to wear any elegant color that beautifully complements the Groom.",
+      menTitle: "For Men",
+      menText: "Mundu and Kurta will be especially appreciated.",
+      ladiesTitle: "For Ladies",
+      ladiesText:
+        "Any graceful and elegant attire in beautiful tones is warmly welcome.",
+      noteTitle: "A Loving Note",
       noteText:
-        "Para mantener cada celebración visualmente elegante y bellamente coordinada, invitamos a nuestros invitados a seguir los colores sugeridos para cada día.",
-      sections: [
-        {
-          icon: MoonStar,
-          day: "Día del Nikah",
-          date: "25 Abril 2026 · Mañana",
-          vibe: "Suave, sereno, elegante",
-          attire: "Pasteles elegantes / tradicional refinado",
-          description:
-            "Como nosotros vestiremos off-white, pedimos a los invitados elegir tonos pastel suaves y neutros claros.",
-          wear: [
-            "Champán Beige",
-            "Rosa Blush",
-            "Verde Salvia",
-            "Azul Polvo",
-            "Gris Claro",
-            "Marfil Suave",
-          ],
-          avoid: ["Blanco Puro", "Negro", "Tonos Neón"],
-          chipColors: [
-            "bg-[#d9c7a4]",
-            "bg-[#e8c8c8]",
-            "bg-[#b8c4ad]",
-            "bg-[#c8d6e8]",
-            "bg-[#d8d8d8]",
-            "bg-[#f1eadc]",
-          ],
-        },
-        {
-          icon: Music2,
-          day: "Noche de Sangeeth",
-          date: "25 Abril 2026 · Noche",
-          vibe: "Real, festivo, vibrante",
-          attire: "Tonos joya / glamour festivo",
-          description:
-            "Como nosotros vestiremos champagne-gold y verde oliva oscuro, pedimos a los invitados elegir tonos festivos intensos que no coincidan con la paleta de la pareja, para que los novios sigan siendo el centro visual.",
-          wear: [
-            "Vino",
-            "Marrón Rojo",
-            "Azul Marino",
-            "Púrpura Oscuro",
-            "Ciruela",
-            "Azul Medianoche",
-          ],
-          avoid: [
-            "Tonos Verdes",
-            "Oliva",
-            "Tonos Marrones",
-            "Champagne Gold",
-            "Beige",
-          ],
-          chipColors: [
-            "bg-[#6b1f34]",
-            "bg-[#7a2330]",
-            "bg-[#203c73]",
-            "bg-[#5f3b78]",
-            "bg-[#6f3d6d]",
-            "bg-[#1f2f4f]",
-          ],
-        },
-        {
-          icon: Crown,
-          day: "Día de Recepción",
-          date: "26 Abril 2026 · Gran Celebración",
-          vibe: "Formal, lujoso, nocturno",
-          attire: "Formal elegante / lujo de noche",
-          description:
-            "Como la novia vestirá rojo y el novio negro, pedimos a los invitados elegir tonos refinados de noche que permitan que la pareja siga siendo el centro visual.",
-          wear: [
-            "Dorado Metálico",
-            "Bronce",
-            "Beige",
-            "Azul Marino Oscuro",
-            "Gris Carbón",
-            "Topo",
-          ],
-          avoid: ["Negro", "Rojo Brillante", "Colores Neón", "Combinación Roja-Negra Muy Fuerte"],
-          chipColors: [
-            "bg-[#c7a34b]",
-            "bg-[#8d6238]",
-            "bg-[#dcc8ae]",
-            "bg-[#22345a]",
-            "bg-[#52565c]",
-            "bg-[#9b8a7a]",
-          ],
-        },
-      ],
+        "With joyful hearts in Christ, we warmly invite you to be part of our blessed celebration. Your presence, prayers, and blessings mean so much to us and to our families.",
+      quoteTitle: "A Christian Blessing",
+      quote:
+        "“This is the day that the Lord has made; let us rejoice and be glad in it.”",
+      verse: "Psalm 118:24",
+      footer:
+        "Come celebrate love, faith, and togetherness with us on this special day.",
     },
   }
 
-  const { title, subtitle, noteTitle, noteText, sections } = content[language]
+  const {
+    title,
+    subtitle,
+    dressTitle,
+    dressText,
+    menTitle,
+    menText,
+    ladiesTitle,
+    ladiesText,
+    noteTitle,
+    noteText,
+    quoteTitle,
+    quote,
+    verse,
+    footer,
+  } = content[language]
+
+  const dressItems = [
+    {
+      icon: Shirt,
+      title: dressTitle,
+      text: dressText,
+    },
+    {
+      icon: Sparkles,
+      title: menTitle,
+      text: menText,
+    },
+    {
+      icon: HeartHandshake,
+      title: ladiesTitle,
+      text: ladiesText,
+    },
+  ]
 
   return (
-    <section className="relative overflow-hidden py-24 bg-gradient-to-b from-[#f6f1e7] via-[#eee8db] to-[#e7e0d3]">
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute top-16 left-[8%] h-72 w-72 rounded-full bg-sage/12 blur-3xl" />
-        <div className="absolute bottom-10 right-[8%] h-72 w-72 rounded-full bg-champagne/16 blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 h-80 w-80 -translate-x-1/2 -translate-y-1/2 rounded-full bg-olive/8 blur-3xl" />
+    <section
+      id="dress-code"
+      className="relative overflow-hidden py-24 md:py-28"
+      style={{
+        background:
+          "linear-gradient(180deg, #f8dde7 0%, #f4d2de 18%, #f2dbe2 34%, #4a2a3a 62%, #2d1824 82%, #f3d8e2 100%)",
+      }}
+    >
+      {/* background atmosphere */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-[#ffeaf2]/85 via-[#f9dde8]/40 to-transparent" />
+        <div className="absolute left-[6%] top-16 h-64 w-64 rounded-full bg-[#ffd7e5]/20 blur-2xl" />
+        <div className="absolute right-[8%] top-24 h-72 w-72 rounded-full bg-[#ffc9dc]/14 blur-2xl" />
+        <div className="absolute left-1/2 top-1/2 h-[30rem] w-[30rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#7f4a65]/12 blur-2xl" />
+        <div className="absolute bottom-0 left-1/2 h-80 w-80 -translate-x-1/2 rounded-full bg-[#ffe3ec]/12 blur-2xl" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.18),transparent_34%)]" />
       </div>
 
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container relative z-10 mx-auto px-4">
+        {/* heading */}
         <motion.div
-          className="text-center mb-14"
-          initial={{ opacity: 0, y: 30, filter: "blur(8px)" }}
+          className="mx-auto mb-16 max-w-3xl text-center md:mb-20"
+          initial={{ opacity: 0, y: 28, filter: "blur(6px)" }}
           whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
         >
           <div className="mb-5 flex items-center justify-center gap-3">
-            <div className="h-px w-14 bg-gradient-to-r from-transparent via-champagne to-transparent" />
-            <div className="h-2.5 w-2.5 rotate-45 border border-champagne/70 bg-white/50" />
-            <div className="h-px w-14 bg-gradient-to-r from-transparent via-champagne to-transparent" />
+            <div className="h-px w-16 bg-gradient-to-r from-transparent via-[#c996ad] to-transparent" />
+            <div className="h-2.5 w-2.5 rotate-45 border border-[#ddb4c7]/80 bg-white/75 shadow-[0_0_10px_rgba(255,255,255,0.30)]" />
+            <div className="h-px w-16 bg-gradient-to-r from-transparent via-[#c996ad] to-transparent" />
           </div>
 
           <h2
-            className="text-4xl md:text-5xl text-[#24311f] mb-3"
-            style={{ fontFamily: "var(--font-script), cursive" }}
+            className="mb-4 text-4xl md:text-5xl"
+            style={{
+              fontFamily: "var(--font-script), cursive",
+              color: "#3f2433",
+              textShadow:
+                "0 1px 0 rgba(255,255,255,0.55), 0 8px 24px rgba(122,70,94,0.10)",
+            }}
           >
             {title}
           </h2>
 
-          <p className="text-[#24311f]/65 max-w-xl mx-auto text-sm md:text-base leading-relaxed">
+          <p className="mx-auto max-w-2xl text-sm leading-7 text-[#604151] md:text-base">
             {subtitle}
           </p>
         </motion.div>
 
-        <motion.div
-          className="max-w-3xl mx-auto mb-12"
-          initial={{ opacity: 0, y: 24, scale: 0.98 }}
-          whileInView={{ opacity: 1, y: 0, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.75, delay: 0.08 }}
-        >
-          <div className="relative overflow-hidden rounded-[2rem] border border-white/40 bg-white/20 backdrop-blur-2xl px-6 py-6 md:px-8 md:py-7 shadow-[0_18px_50px_rgba(36,49,31,0.08)]">
-            <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.22),rgba(255,255,255,0.03)_35%,transparent_60%)]" />
-            <div className="absolute top-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-champagne/55 to-transparent" />
+        {/* new split layout */}
+        <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[1.05fr_0.95fr]">
+          {/* left side */}
+          <motion.div
+            initial={{ opacity: 0, x: -40, y: 30 }}
+            whileInView={{ opacity: 1, x: 0, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            className="relative overflow-hidden rounded-[2.2rem] border border-white/25 bg-[#fff8fb]/88 p-6 shadow-[0_20px_60px_rgba(25,10,19,0.12)] md:p-8"
+          >
+            <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.18),rgba(255,255,255,0.04)_36%,transparent_60%)]" />
+            <div className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-[#efc8d7]/60 to-transparent" />
+            <div className="absolute -right-10 -top-10 h-28 w-28 rounded-full border border-[#f0cad8]/20" />
 
-            <div className="relative text-center">
-              <div className="flex justify-center mb-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/40 bg-white/70 shadow-[0_10px_20px_rgba(0,0,0,0.05)]">
-                  <Sparkles className="h-5 w-5 text-[#24311f]" />
+            <div className="relative z-10">
+              <div className="mb-8 flex items-center gap-4">
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-[#edd0dc] bg-[#fff8fb] shadow-[0_10px_24px_rgba(79,44,61,0.08)]">
+                  <Shirt className="h-6 w-6 text-[#5a3347]" />
+                </div>
+                <div>
+                  <h3
+                    className="text-[2rem] leading-none text-[#4b2d3d] md:text-[2.2rem]"
+                    style={{ fontFamily: "var(--font-script), cursive" }}
+                  >
+                    {dressTitle}
+                  </h3>
+                  <p className="mt-2 text-sm uppercase tracking-[0.18em] text-[#9a6c84]">
+                    Elegant • Graceful • Warmly Welcome
+                  </p>
                 </div>
               </div>
 
-              <h3 className="text-[#24311f] text-lg md:text-xl font-medium mb-2">
-                {noteTitle}
-              </h3>
-              <p className="text-[#24311f]/65 text-sm md:text-base leading-7">
-                {noteText}
-              </p>
-            </div>
-          </div>
-        </motion.div>
+              <div className="space-y-4">
+                {dressItems.map((item, index) => {
+                  const Icon = item.icon
 
-        <div className="grid gap-7 lg:grid-cols-3 max-w-7xl mx-auto">
-          {sections.map((section, index) => {
-            const Icon = section.icon
-
-            return (
-              <motion.div
-                key={section.day}
-                initial={{ opacity: 0, y: 50, scale: 0.97, filter: "blur(8px)" }}
-                whileInView={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{
-                  duration: 0.85,
-                  delay: index * 0.12,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
-                className="group"
-              >
-                <motion.div
-                  whileHover={{ y: -8, scale: 1.01 }}
-                  transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                  className="relative h-full overflow-hidden rounded-[2rem] border border-white/40 bg-white/20 backdrop-blur-2xl shadow-[0_22px_55px_rgba(36,49,31,0.10)]"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-b from-white/18 via-transparent to-[#d9c28c]/8" />
-                  <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.18),rgba(255,255,255,0.02)_36%,transparent_60%)]" />
-
-                  <div className="absolute top-4 left-4 h-8 w-8 rounded-tl-xl border-l border-t border-champagne/65" />
-                  <div className="absolute top-4 right-4 h-8 w-8 rounded-tr-xl border-r border-t border-champagne/65" />
-                  <div className="absolute bottom-4 left-4 h-8 w-8 rounded-bl-xl border-b border-l border-champagne/65" />
-                  <div className="absolute bottom-4 right-4 h-8 w-8 rounded-br-xl border-b border-r border-champagne/65" />
-
-                  <motion.div
-                    className="pointer-events-none absolute inset-y-0 -left-1/3 w-1/3 bg-gradient-to-r from-transparent via-white/14 to-transparent skew-x-[-18deg]"
-                    initial={{ x: "-140%" }}
-                    whileHover={{ x: "380%" }}
-                    transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-                  />
-
-                  <div className="relative z-10 p-7 md:p-8">
-                    <div className="flex items-start justify-between gap-4 mb-6">
-                      <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/40 bg-white/75 shadow-[0_10px_20px_rgba(0,0,0,0.05)]">
-                        <Icon className="h-6 w-6 text-[#24311f]" />
-                      </div>
-
-                      <div className="rounded-full border border-champagne/35 bg-white/55 px-4 py-1.5 text-[11px] tracking-[0.18em] uppercase text-[#24311f]/70">
-                        {section.date}
-                      </div>
-                    </div>
-
-                    <h3
-                      className="text-[2rem] leading-none text-[#24311f] mb-2"
-                      style={{ fontFamily: "var(--font-script), cursive" }}
+                  return (
+                    <motion.div
+                      key={item.title}
+                      initial={{ opacity: 0, y: 24, scale: 0.98 }}
+                      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{
+                        duration: 0.7,
+                        delay: 0.12 + index * 0.1,
+                        ease: [0.22, 1, 0.36, 1],
+                      }}
+                      className="group relative overflow-hidden rounded-[1.6rem] border border-[#efd4df] bg-white/80 p-5 shadow-[0_12px_30px_rgba(79,44,61,0.06)]"
                     >
-                      {section.day}
-                    </h3>
-
-                    <p className="text-sm uppercase tracking-[0.18em] text-[#8f7440] font-medium mb-4">
-                      {section.vibe}
-                    </p>
-
-                    <div className="mb-5 rounded-2xl border border-champagne/25 bg-white/45 px-4 py-3">
-                      <p className="text-[#24311f] text-sm font-medium">{section.attire}</p>
-                    </div>
-
-                    <p className="text-[#24311f]/67 text-sm leading-7 mb-6">
-                      {section.description}
-                    </p>
-
-                    <div className="mb-6">
-                      <h4 className="text-[#24311f] text-sm font-semibold mb-3 flex items-center gap-2">
-                        <Check className="h-4 w-4 text-[#8f7440]" />
-                        Recommended Colors
-                      </h4>
-
-                      <div className="grid grid-cols-2 gap-2.5">
-                        {section.wear.map((item, chipIndex) => (
-                          <motion.div
-                            key={item}
-                            initial={{ opacity: 0, y: 10 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{
-                              duration: 0.45,
-                              delay: 0.25 + chipIndex * 0.05 + index * 0.08,
-                            }}
-                            className="flex items-center gap-2 rounded-full border border-white/45 bg-white/55 px-2.5 py-2"
-                          >
-                            <span
-                              className={`h-5 w-5 rounded-full border border-white/60 shadow-sm ${section.chipColors[chipIndex]}`}
-                            />
-                            <span className="text-[12px] md:text-[13px] text-[#24311f]/78">
-                              {item}
-                            </span>
-                          </motion.div>
-                        ))}
+                      <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.18),transparent_58%)]" />
+                      <div className="relative z-10 flex gap-4">
+                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#f7e6ee]">
+                          <Icon className="h-5 w-5 text-[#6b4154]" />
+                        </div>
+                        <div>
+                          <h4 className="mb-1 text-base font-semibold text-[#4b2d3d]">
+                            {item.title}
+                          </h4>
+                          <p className="text-sm leading-7 text-[#6a5060]">
+                            {item.text}
+                          </p>
+                        </div>
                       </div>
-                    </div>
+                    </motion.div>
+                  )
+                })}
+              </div>
+            </div>
+          </motion.div>
 
-                    <div className="rounded-2xl border border-[#b98d73]/18 bg-[#fff7f2]/55 px-4 py-4">
-                      <h4 className="text-[#7b4934] text-sm font-semibold mb-2">
-                        Avoid
-                      </h4>
-                      <div className="flex flex-wrap gap-2">
-                        {section.avoid.map((item) => (
-                          <span
-                            key={item}
-                            className="rounded-full bg-white/70 border border-[#caa08d]/25 px-3 py-1.5 text-[12px] text-[#7b4934]/90"
-                          >
-                            {item}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
+          {/* right side */}
+          <motion.div
+            initial={{ opacity: 0, x: 40, y: 30 }}
+            whileInView={{ opacity: 1, x: 0, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.95, ease: [0.22, 1, 0.36, 1] }}
+            className="relative overflow-hidden rounded-[2.2rem] border border-white/20 bg-[#4f2c3d] p-6 text-white shadow-[0_24px_70px_rgba(25,10,19,0.18)] md:p-8"
+          >
+            <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.12),transparent_38%,rgba(255,255,255,0.03)_70%,transparent_100%)]" />
+            <div className="absolute left-0 top-0 h-full w-full bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.14),transparent_34%)]" />
+            <div className="absolute -bottom-12 -right-12 h-40 w-40 rounded-full border border-white/10" />
 
-                    <div className="mt-6 flex items-center justify-center gap-2">
-                      <div className="w-7 h-px bg-champagne/45" />
-                      <div className="w-1.5 h-1.5 rounded-full bg-champagne/45" />
-                      <div className="w-7 h-px bg-champagne/45" />
-                    </div>
-                  </div>
-                </motion.div>
+            <div className="relative z-10">
+              <motion.div
+                initial={{ opacity: 0, y: 20, scale: 0.96 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.75, delay: 0.08 }}
+                className="mb-8"
+              >
+                <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/20 bg-white/10">
+                  <Cross className="h-6 w-6 text-[#f5d7e4]" />
+                </div>
+
+                <h3
+                  className="mb-3 text-[2rem] leading-none md:text-[2.2rem]"
+                  style={{ fontFamily: "var(--font-script), cursive" }}
+                >
+                  {noteTitle}
+                </h3>
+
+                <p className="text-sm leading-8 text-white/82 md:text-[15px]">
+                  {noteText}
+                </p>
               </motion.div>
-            )
-          })}
+
+              <motion.div
+                initial={{ opacity: 0, y: 28 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.85, delay: 0.16 }}
+                className="relative overflow-hidden rounded-[1.8rem] border border-white/15 bg-white/10 p-6 md:p-7"
+              >
+                <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.12),transparent_60%)]" />
+                <div className="relative z-10">
+                  <p className="mb-3 text-xs uppercase tracking-[0.24em] text-[#f1cad9]">
+                    {quoteTitle}
+                  </p>
+
+                  <p
+                    className="text-lg italic leading-8 text-white/92 md:text-[1.35rem]"
+                    style={{
+                      fontFamily: '"Cormorant Garamond", serif',
+                    }}
+                  >
+                    {quote}
+                  </p>
+
+                  <p className="mt-4 text-sm font-medium tracking-[0.14em] text-[#f3d5e1] uppercase">
+                    {verse}
+                  </p>
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.24 }}
+                className="mt-6 flex items-start gap-4 rounded-[1.6rem] border border-white/12 bg-[#5d3649]/70 p-5"
+              >
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white/10">
+                  <Sparkles className="h-5 w-5 text-[#f3d5e1]" />
+                </div>
+                <p className="text-sm leading-7 text-white/84">{footer}</p>
+              </motion.div>
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>

@@ -14,17 +14,28 @@ export default function ScratchDate({ text }: ScratchDateProps) {
 
   const [revealed, setRevealed] = useState(false)
   const [isScratching, setIsScratching] = useState(false)
-  const [shimmering, setShimmering] = useState(true)
+  const [showBurst, setShowBurst] = useState(false)
 
-  const sparkles = useMemo(
+  const petals = useMemo(
     () =>
-      Array.from({ length: 18 }, (_, i) => ({
+      Array.from({ length: 16 }, (_, i) => ({
         id: i,
-        left: `${(i * 13.7) % 100}%`,
-        top: `${(i * 17.3) % 100}%`,
-        delay: i * 0.06,
-        x: i % 2 === 0 ? 24 : -24,
-        y: -18 - (i % 4) * 6,
+        left: `${(i * 11.3) % 100}%`,
+        delay: i * 0.05,
+        size: 8 + (i % 4) * 3,
+        x: i % 2 === 0 ? 40 : -40,
+        y: -40 - (i % 5) * 12,
+      })),
+    []
+  )
+
+  const confetti = useMemo(
+    () =>
+      Array.from({ length: 28 }, (_, i) => ({
+        id: i,
+        x: (Math.random() - 0.5) * 380,
+        y: (Math.random() - 0.5) * 260,
+        delay: i * 0.015,
       })),
     []
   )
@@ -59,71 +70,64 @@ export default function ScratchDate({ text }: ScratchDateProps) {
 
       ctx.clearRect(0, 0, width, height)
 
-      // Rich metallic foil base
-      const gradient = ctx.createLinearGradient(0, 0, width, height)
-      gradient.addColorStop(0, "#fff0bf")
-      gradient.addColorStop(0.16, "#ddb85e")
-      gradient.addColorStop(0.34, "#fff5cf")
-      gradient.addColorStop(0.54, "#b8862d")
-      gradient.addColorStop(0.76, "#f0cf7d")
-      gradient.addColorStop(1, "#8c6318")
+      const foil = ctx.createLinearGradient(0, 0, width, height)
+      foil.addColorStop(0, "#fafafa")
+      foil.addColorStop(0.18, "#d9d9d9")
+      foil.addColorStop(0.36, "#f2f2f2")
+      foil.addColorStop(0.58, "#bebebe")
+      foil.addColorStop(0.8, "#ededed")
+      foil.addColorStop(1, "#c8c8c8")
 
-      ctx.fillStyle = gradient
+      ctx.fillStyle = foil
       ctx.fillRect(0, 0, width, height)
 
-      // Metallic wave texture
       for (let i = 0; i < 18; i++) {
         const y = (height / 18) * i
         ctx.strokeStyle =
-          i % 2 === 0 ? "rgba(255,255,255,0.16)" : "rgba(77,53,16,0.10)"
-        ctx.lineWidth = 1.2
+          i % 2 === 0 ? "rgba(255,255,255,0.2)" : "rgba(90,90,90,0.08)"
+        ctx.lineWidth = 1
         ctx.beginPath()
         ctx.moveTo(0, y)
-        ctx.bezierCurveTo(width * 0.25, y + 8, width * 0.75, y - 8, width, y + 6)
+        ctx.bezierCurveTo(width * 0.25, y + 7, width * 0.75, y - 7, width, y + 5)
         ctx.stroke()
       }
 
-      // Sparkle dots on foil
-      for (let i = 0; i < 90; i++) {
-        ctx.fillStyle = `rgba(255,255,255,${Math.random() * 0.12})`
+      for (let i = 0; i < 120; i++) {
+        ctx.fillStyle = `rgba(255,255,255,${Math.random() * 0.16})`
         ctx.beginPath()
         ctx.arc(
           Math.random() * width,
           Math.random() * height,
-          Math.random() * 1.6 + 0.4,
+          Math.random() * 1.4 + 0.3,
           0,
           Math.PI * 2
         )
         ctx.fill()
       }
 
-      // Vignette
-      const radial = ctx.createRadialGradient(
-        width / 2,
-        height / 2,
-        width * 0.08,
-        width / 2,
-        height / 2,
-        width * 0.78
+      const gloss = ctx.createRadialGradient(
+        width * 0.5,
+        height * 0.4,
+        10,
+        width * 0.5,
+        height * 0.5,
+        width * 0.7
       )
-      radial.addColorStop(0, "rgba(255,255,255,0.12)")
-      radial.addColorStop(1, "rgba(0,0,0,0.16)")
-      ctx.fillStyle = radial
+      gloss.addColorStop(0, "rgba(255,255,255,0.18)")
+      gloss.addColorStop(1, "rgba(255,255,255,0)")
+      ctx.fillStyle = gloss
       ctx.fillRect(0, 0, width, height)
 
-      // Stronger instruction text
       ctx.textAlign = "center"
       ctx.textBaseline = "middle"
 
-      // shadow/outline layer
-      ctx.fillStyle = "rgba(70,48,12,0.92)"
+      ctx.fillStyle = "rgba(80,62,68,0.92)"
       ctx.font = "700 15px Georgia, serif"
-      ctx.fillText("Scratch to Reveal Date", width / 2, height / 2 + 1)
+      ctx.fillText("Scratch to Reveal", width / 2, height / 2 + 1)
 
-      // highlight layer
-      ctx.fillStyle = "rgba(255,248,222,0.92)"
+      ctx.fillStyle = "rgba(255,255,255,0.92)"
       ctx.font = "700 14px Georgia, serif"
-      ctx.fillText("Scratch to Reveal Date", width / 2, height / 2 - 1)
+      ctx.fillText("Scratch to Reveal", width / 2, height / 2 - 1)
 
       ctx.globalCompositeOperation = "destination-out"
     }
@@ -131,24 +135,6 @@ export default function ScratchDate({ text }: ScratchDateProps) {
     setupCanvas()
 
     let drawing = false
-    let lastVibrateTime = 0
-    let lastSoundTime = 0
-
-    const vibrateScratch = () => {
-      const now = Date.now()
-      if (now - lastVibrateTime > 90 && typeof navigator !== "undefined" && "vibrate" in navigator) {
-        navigator.vibrate(6)
-        lastVibrateTime = now
-      }
-    }
-
-    const playScratchSound = () => {
-      const now = Date.now()
-      if (!audioRef.current || now - lastSoundTime < 120) return
-      audioRef.current.currentTime = 0
-      audioRef.current.play().catch(() => {})
-      lastSoundTime = now
-    }
 
     const getPoint = (event: MouseEvent | TouchEvent) => {
       const rect = canvas.getBoundingClientRect()
@@ -190,18 +176,16 @@ export default function ScratchDate({ text }: ScratchDateProps) {
       const totalPixels = imageData.data.length / 4
       const percent = transparentPixels / totalPixels
 
-      if (percent > 0.34 && !revealed) {
+      if (percent > 0.32 && !revealed) {
         setRevealed(true)
-        setShimmering(false)
-
-        if (typeof navigator !== "undefined" && "vibrate" in navigator) {
-          navigator.vibrate([18, 40, 18])
-        }
+        setShowBurst(true)
 
         if (audioRef.current) {
           audioRef.current.currentTime = 0
           audioRef.current.play().catch(() => {})
         }
+
+        setTimeout(() => setShowBurst(false), 1600)
       }
     }
 
@@ -212,8 +196,6 @@ export default function ScratchDate({ text }: ScratchDateProps) {
       const point = getPoint(event)
       if (!point) return
       scratch(point.x, point.y)
-      playScratchSound()
-      vibrateScratch()
     }
 
     const handleMove = (event: MouseEvent | TouchEvent) => {
@@ -221,8 +203,6 @@ export default function ScratchDate({ text }: ScratchDateProps) {
       const point = getPoint(event)
       if (!point) return
       scratch(point.x, point.y)
-      playScratchSound()
-      vibrateScratch()
       checkReveal()
     }
 
@@ -257,144 +237,191 @@ export default function ScratchDate({ text }: ScratchDateProps) {
   }, [revealed])
 
   return (
-    <motion.div
-      ref={wrapperRef}
-      className="relative w-[290px] sm:w-[330px] mx-auto"
-      initial={{ opacity: 0, y: 12, scale: 0.96 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-    >
-      <motion.div
-        className="relative overflow-hidden rounded-[2rem] border border-white/40 bg-white/18 backdrop-blur-2xl shadow-[0_20px_60px_rgba(36,49,31,0.18)] px-6 py-5"
-        animate={
-          revealed
-            ? {
-                boxShadow: [
-                  "0 20px 60px rgba(36,49,31,0.18)",
-                  "0 22px 68px rgba(200,178,125,0.22)",
-                  "0 20px 60px rgba(36,49,31,0.18)",
-                ],
-              }
-            : {}
+    <>
+      <style>{`
+        @keyframes dateShimmer {
+          0% { background-position: 200% 0; }
+          100% { background-position: -200% 0; }
         }
-        transition={{ duration: 1.2, ease: "easeInOut" }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-br from-white/25 via-transparent to-champagne/10" />
-        <div className="absolute left-5 right-5 top-0 h-px bg-gradient-to-r from-transparent via-champagne/60 to-transparent" />
-        <div className="absolute left-5 right-5 bottom-0 h-px bg-gradient-to-r from-transparent via-olive/25 to-transparent" />
+      `}</style>
 
-        <div className="relative flex items-center justify-center gap-4 min-h-[72px]">
-          <div className="h-2 w-2 rounded-full bg-olive shadow-[0_0_10px_rgba(111,123,91,0.45)]" />
+      <section className="relative overflow-hidden py-28">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#161212] via-[#f7dbe3] to-[#fff8f5]" />
 
-          <motion.span
-            className="text-[#24311f] font-semibold tracking-[0.18em] text-sm md:text-base uppercase text-center"
-            initial={{ opacity: 0.7 }}
-            animate={
-              revealed
-                ? {
-                    opacity: 1,
-                    scale: [1, 1.03, 1],
-                    filter: [
-                      "drop-shadow(0 0 0 rgba(200,178,125,0))",
-                      "drop-shadow(0 0 12px rgba(200,178,125,0.35))",
-                      "drop-shadow(0 0 0 rgba(200,178,125,0))",
-                    ],
-                  }
-                : { opacity: 0.72 }
-            }
-            transition={{ duration: 1.1, ease: "easeInOut" }}
-          >
-            {text}
-          </motion.span>
-
-          <div className="h-2 w-2 rounded-full bg-olive shadow-[0_0_10px_rgba(111,123,91,0.45)]" />
+        <div className="absolute inset-0 pointer-events-none">
+          {[...Array(16)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute rounded-full bg-[#f7c6d9]"
+              style={{
+                left: `${(i * 9.7) % 100}%`,
+                top: `${(i * 14.3) % 100}%`,
+                width: 6 + (i % 4) * 4,
+                height: 6 + (i % 4) * 4,
+                filter: "blur(1px)",
+              }}
+              animate={{
+                y: [0, -18, 0],
+                opacity: [0.15, 0.85, 0.15],
+                scale: [1, 1.25, 1],
+              }}
+              transition={{
+                duration: 4 + (i % 5),
+                delay: i * 0.2,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+          ))}
         </div>
 
+        <div className="relative z-10 mb-14 text-center">
+          <motion.h2
+            className="font-serif text-4xl text-[#2e2a2a] md:text-5xl"
+            initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
+            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.9 }}
+          >
+            Save The Date
+          </motion.h2>
+        </div>
+
+        <motion.div
+          ref={wrapperRef}
+          className="relative mx-auto w-[320px] sm:w-[380px]"
+          initial={{ opacity: 0, y: 18, scale: 0.96 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true }}
+          whileHover={{
+            y: -8,
+            scale: 1.02,
+            boxShadow: "0 35px 100px rgba(183,110,121,0.38)",
+          }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <div className="relative overflow-hidden rounded-[28px] border border-[#f2c9d6] bg-gradient-to-br from-[#fff8f5] via-[#fdeaf1] to-[#f7c6d9] px-12 py-12 shadow-[0_30px_80px_rgba(183,110,121,0.35)]">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.22),transparent_38%)]" />
+            <div className="absolute inset-0 bg-gradient-to-br from-white/25 via-transparent to-[#f7c6d9]/15" />
+
+            <motion.div
+              className="relative text-center"
+              initial={{ opacity: 0.2 }}
+              animate={
+                revealed
+                  ? {
+                      opacity: 1,
+                      scale: [0.82, 1.08, 1],
+                    }
+                  : {
+                      opacity: 0.35,
+                    }
+              }
+              transition={{ duration: 1 }}
+            >
+              <div className="mb-3 text-[11px] uppercase tracking-[0.32em] text-[#8d6a56]">
+                Wedding Date
+              </div>
+
+              <span
+                className="text-[36px] font-serif tracking-[0.24em] text-transparent md:text-[44px]"
+                style={{
+                  backgroundImage:
+                    "linear-gradient(90deg, #b8874a 0%, #fff1c8 30%, #d4af7f 52%, #fff1c8 72%, #b8874a 100%)",
+                  backgroundSize: "200% 100%",
+                  backgroundClip: "text",
+                  WebkitBackgroundClip: "text",
+                  animation: revealed ? "dateShimmer 3s linear infinite" : "none",
+                  textShadow: revealed ? "0 0 18px rgba(212,175,127,0.2)" : "none",
+                }}
+              >
+                {text}
+              </span>
+            </motion.div>
+
+            <AnimatePresence>
+              {!revealed && (
+                <motion.canvas
+                  ref={canvasRef}
+                  className="absolute inset-0 h-full w-full rounded-[28px] touch-none"
+                  initial={{ opacity: 1 }}
+                  exit={{ opacity: 0, scale: 1.04, filter: "blur(2px)" }}
+                  transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                />
+              )}
+            </AnimatePresence>
+          </div>
+        </motion.div>
+
         <AnimatePresence>
-          {!revealed && (
-            <motion.canvas
-              ref={canvasRef}
-              className="absolute inset-0 w-full h-full rounded-[2rem] touch-none"
-              initial={{ opacity: 1 }}
-              exit={{ opacity: 0, scale: 1.02, filter: "blur(2px)" }}
-              transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-            />
+          {isScratching && !revealed && (
+            <div className="pointer-events-none absolute inset-0">
+              {petals.map((petal) => (
+                <motion.div
+                  key={petal.id}
+                  className="absolute rounded-full bg-[#f7c6d9]"
+                  style={{
+                    left: petal.left,
+                    top: "58%",
+                    width: petal.size,
+                    height: petal.size * 0.78,
+                    borderRadius: "65% 35% 60% 40% / 50% 45% 55% 50%",
+                    boxShadow: "0 8px 18px rgba(219,133,163,0.16)",
+                  }}
+                  initial={{ x: 0, y: 0, opacity: 0.9, rotate: 0 }}
+                  animate={{
+                    x: petal.x,
+                    y: petal.y,
+                    opacity: 0,
+                    rotate: 180,
+                  }}
+                  exit={{ opacity: 0 }}
+                  transition={{
+                    duration: 1.4,
+                    delay: petal.delay,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                />
+              ))}
+            </div>
           )}
         </AnimatePresence>
 
-        {!revealed && shimmering && (
-          <motion.div
-            className="pointer-events-none absolute inset-0 rounded-[2rem] bg-gradient-to-r from-transparent via-white/25 to-transparent"
-            animate={{ x: ["-120%", "120%"] }}
-            transition={{
-              duration: 2.6,
-              repeat: Infinity,
-              ease: "linear",
-              repeatDelay: 1.1,
-            }}
-          />
-        )}
-
-        {!revealed && (
-          <div className="pointer-events-none absolute inset-x-0 bottom-2 flex justify-center">
-            <span className="text-[10px] font-semibold uppercase tracking-[0.24em] text-[#4c401d]/85">
-              Reveal Our Date
-            </span>
-          </div>
-        )}
-      </motion.div>
-
-      <AnimatePresence>
-        {revealed && (
-          <div className="pointer-events-none absolute inset-0">
-            {sparkles.map((sparkle) => (
-              <motion.div
-                key={sparkle.id}
-                className="absolute"
-                style={{ left: sparkle.left, top: sparkle.top }}
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{
-                  opacity: [0, 1, 0],
-                  scale: [0, 1.5, 0],
-                  x: [0, sparkle.x],
-                  y: [0, sparkle.y],
-                }}
-                exit={{ opacity: 0 }}
-                transition={{
-                  duration: 1.2,
-                  delay: sparkle.delay,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
-              >
-                <div className="w-1.5 h-1.5 rounded-full bg-champagne shadow-[0_0_12px_rgba(200,178,125,0.8)]" />
-              </motion.div>
-            ))}
-          </div>
-        )}
-      </AnimatePresence>
-
-      <AnimatePresence>
-        {revealed && (
-          <motion.div
-            className="pointer-events-none absolute -inset-2 rounded-[2.3rem] bg-gradient-to-r from-transparent via-champagne/15 to-transparent blur-xl"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: [0, 1, 0.35] }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1.4, ease: "easeOut" }}
-          />
-        )}
-      </AnimatePresence>
-
-      <AnimatePresence>
-        {isScratching && !revealed && (
-          <motion.div
-            className="pointer-events-none absolute inset-0 rounded-[2rem] border border-white/35"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          />
-        )}
-      </AnimatePresence>
-    </motion.div>
+        <AnimatePresence>
+          {showBurst && (
+            <div className="pointer-events-none absolute inset-0">
+              {confetti.map((piece) => (
+                <motion.div
+                  key={piece.id}
+                  className="absolute rounded-full"
+                  style={{
+                    left: "50%",
+                    top: "56%",
+                    width: 8,
+                    height: 8,
+                    background:
+                      piece.id % 3 === 0 ? "#f7c6d9" : piece.id % 3 === 1 ? "#d4af7f" : "#fff1d6",
+                    boxShadow: "0 0 14px rgba(212,175,127,0.28)",
+                  }}
+                  initial={{ x: 0, y: 0, opacity: 1, scale: 1 }}
+                  animate={{
+                    x: piece.x,
+                    y: piece.y,
+                    opacity: 0,
+                    scale: 0,
+                  }}
+                  exit={{ opacity: 0 }}
+                  transition={{
+                    duration: 1.35,
+                    delay: piece.delay,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                />
+              ))}
+            </div>
+          )}
+        </AnimatePresence>
+      </section>
+    </>
   )
 }

@@ -1,192 +1,229 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Phone, MessageCircle, Share2, MapPin, Heart } from "lucide-react"
+import {
+  Phone,
+  MessageCircle,
+  Share2,
+  MapPin,
+  Heart,
+  Instagram,
+} from "lucide-react"
 
 interface ContactProps {
-  language: "ES" | "EN"
+  language: "EN" | "ES"
 }
 
 export function Contact({ language }: ContactProps) {
-  const content = {
-    EN: {
-      title: "Get in Touch",
-      subtitle: "We would love to hear from you",
-      openMap: "Open Map",
-      callFamily: "Call Family",
-      whatsappFamily: "WhatsApp",
-      shareInvitation: "Share Invitation",
-      footer: "Made with love",
-      copyright: "Mirza & Jinsha"
-    },
-    ES: {
-      title: "Contáctanos",
-      subtitle: "Nos encantaría saber de ti",
-      openMap: "Abrir Mapa",
-      callFamily: "Llamar",
-      whatsappFamily: "WhatsApp",
-      shareInvitation: "Compartir",
-      footer: "Hecho con amor",
-      copyright: "Mirza & Jinsha"
-    }
-  }
-
-  const { title, subtitle, openMap, callFamily, whatsappFamily, shareInvitation, footer, copyright } = content[language]
 
   const phoneNumber = "+971508577054"
-  const mapUrl = "https://maps.google.com/?q=Rainbow+Convention+Centre+Keeramkundu+Malappuram+Kerala"
-  const whatsappMessage = encodeURIComponent(
-    language === "EN" 
-      ? "Hello! I'm reaching out about Mirza & Jinsha's wedding." 
-      : "¡Hola! Me comunico sobre la boda de Mirza y Jinsha."
-  )
+
+  const mapUrl =
+    "https://maps.google.com/?q=Sacred+Heart+Church+Angadikadavu"
+
   const shareMessage = encodeURIComponent(
-    language === "EN"
-      ? "You're invited to Mirza & Jinsha's Wedding! April 25 & 26, 2026. Check out our invitation: "
-      : "¡Estás invitado a la boda de Mirza y Jinsha! 25 y 26 de Abril, 2026. Mira nuestra invitación: "
+    "You're warmly invited to Stebin & Jesna's Wedding Celebration 💍"
   )
 
   const handleShare = async () => {
-    const shareUrl = window.location.href
-    
-    // Try native share first
+    const url = window.location.href
+
     if (navigator.share) {
       try {
         await navigator.share({
-          title: "Mirza & Jinsha Wedding Invitation",
-          text: language === "EN" 
-            ? "You're invited to our wedding! April 25 & 26, 2026"
-            : "¡Estás invitado a nuestra boda! 25 y 26 de Abril, 2026",
-          url: shareUrl
+          title: "Wedding Invitation",
+          text: "With joyful hearts in Christ, we warmly invite you to be part of our special day.Your presence, prayers, and blessings mean so much to us and to our families.Come celebrate love, faith, and togetherness with us.",
+          url,
         })
         return
-      } catch {
-        // Fall back to WhatsApp share
-      }
+      } catch {}
     }
-    
-    const whatsappShareUrl = `https://wa.me/?text=${shareMessage}${encodeURIComponent(shareUrl)}`
-    window.open(whatsappShareUrl, "_blank")
+
+    window.open(`https://wa.me/?text=${shareMessage}%20${url}`, "_blank")
   }
 
   const buttons = [
     {
       icon: MapPin,
-      label: openMap,
+      label: "Venue Map",
       href: mapUrl,
-      className: "bg-sage/15 border-sage/30 text-sage hover:bg-sage/25",
-      iconClassName: "text-sage"
+      style:
+        "bg-white/80 text-[#5a3347] border border-white/50",
     },
     {
       icon: Phone,
-      label: callFamily,
+      label: "Call Family",
       href: `tel:${phoneNumber}`,
-      className: "bg-ivory border-champagne/30 text-foreground hover:bg-cream",
-      iconClassName: "text-wine"
+      style:
+        "bg-white/80 text-[#5a3347] border border-white/50",
     },
     {
       icon: MessageCircle,
-      label: whatsappFamily,
-      href: `https://wa.me/${phoneNumber.replace("+", "")}?text=${whatsappMessage}`,
-      className: "bg-[#25D366]/10 border-[#25D366]/30 text-[#25D366] hover:bg-[#25D366]/20",
-      iconClassName: "text-[#25D366]"
+      label: "WhatsApp",
+      href: `https://wa.me/${phoneNumber.replace("+", "")}`,
+      style:
+        "bg-[#25D366]/15 text-[#25D366] border border-[#25D366]/30",
     },
     {
       icon: Share2,
-      label: shareInvitation,
+      label: "Share Invitation",
       onClick: handleShare,
-      className: "bg-wine/10 border-wine/30 text-wine hover:bg-wine/20",
-      iconClassName: "text-wine"
-    }
+      style:
+        "bg-[#4f2c3d] text-white border border-[#4f2c3d]",
+    },
   ]
 
   return (
-    <section id="contact" className="py-24 bg-cream relative overflow-hidden">
-      {/* Decorative background */}
-      <div className="absolute inset-0">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-champagne/10 rounded-full blur-3xl" />
-      </div>
+    <section
+      id="contact"
+      className="relative py-24 px-4 overflow-hidden"
+      style={{
+        background:
+          "linear-gradient(180deg,#f7dbe5 0%,#f3d3df 25%,#e7c1d0 55%,#7e5165 80%,#3f2433 100%)",
+      }}
+    >
 
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="max-w-5xl mx-auto text-center">
+
+        {/* Title */}
+        <motion.h2
+          className="text-4xl md:text-6xl mb-4"
+          style={{
+            fontFamily: "var(--font-script), cursive",
+            color: "#4b2a3a",
+          }}
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+        >
+          With Love, We Await Your Presence
+        </motion.h2>
+
+        {/* Subtitle */}
+        <motion.p
+          className="max-w-3xl mx-auto text-sm md:text-base leading-7 mb-12 text-[#6a4456]"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+        >
+          Your prayers, blessings and presence will make our celebration even
+          more meaningful. We would be truly honored to celebrate this sacred
+          day with you.
+        </motion.p>
+
+        {/* Glass Card */}
         <motion.div
-          className="text-center mb-12"
+          className="rounded-3xl p-10 backdrop-blur-xl border border-white/40 bg-white/30 shadow-xl"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
         >
-          <h2 className="text-3xl md:text-4xl font-light text-foreground mb-3">
-            {title}
-          </h2>
-          <p className="text-foreground/60">
-            {subtitle}
-          </p>
-        </motion.div>
 
-        {/* Action Buttons Grid */}
-        <motion.div
-          className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl mx-auto"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          {buttons.map((button, index) => {
-            const Icon = button.icon
-            const Component = button.onClick ? 'button' : 'a'
-            
-            return (
-              <motion.div
-                key={button.label}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-              >
+          {/* Blessing Title */}
+          <p className="uppercase text-xs tracking-[0.3em] mb-4 text-[#7a4a61]">
+            A Final Blessing
+          </p>
+
+          {/* Quote */}
+          <p
+            className="italic text-xl md:text-2xl text-[#3f2433]"
+            style={{ fontFamily: "Cormorant Garamond, serif" }}
+          >
+            “This is the day that the Lord has made; let us rejoice and be glad in it.”
+          </p>
+
+          <p className="text-sm mt-3 text-[#9b6c82] uppercase tracking-[0.2em]">
+            Psalm 118:24
+          </p>
+
+          <p className="mt-6 text-sm leading-8 text-[#5b3748] max-w-xl mx-auto">
+            With joyful hearts in Christ, we warmly welcome you to be part of our
+            wedding celebration.
+          </p>
+
+          {/* Buttons */}
+          <div className="grid grid-cols-2 gap-4 mt-10">
+
+            {buttons.map((btn, i) => {
+              const Icon = btn.icon
+              const Component = btn.onClick ? "button" : "a"
+
+              return (
                 <Component
-                  {...(button.href ? { href: button.href, target: "_blank", rel: "noopener noreferrer" } : {})}
-                  {...(button.onClick ? { onClick: button.onClick } : {})}
-                  className={`flex flex-col items-center justify-center gap-3 w-full aspect-square border rounded-2xl transition-all ${button.className}`}
+                  key={i}
+                  {...(btn.href ? { href: btn.href, target: "_blank" } : {})}
+                  {...(btn.onClick ? { onClick: btn.onClick } : {})}
+                  className={`flex flex-col items-center justify-center gap-2 p-6 rounded-xl ${btn.style} hover:scale-105 transition`}
                 >
-                  <Icon className={`w-6 h-6 ${button.iconClassName}`} />
-                  <span className="text-sm font-medium">{button.label}</span>
+                  <Icon size={22} />
+                  <span className="text-sm font-medium">
+                    {btn.label}
+                  </span>
                 </Component>
-              </motion.div>
-            )
-          })}
+              )
+            })}
+          </div>
+
         </motion.div>
 
         {/* Footer */}
-        <motion.footer
-          className="mt-20 text-center"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-        >
-          {/* Decorative divider */}
-          <div className="flex items-center justify-center gap-4 mb-8">
-            <div className="w-16 h-px bg-champagne/40" />
-            <Heart className="w-4 h-4 text-wine/50 fill-wine/30" />
-            <div className="w-16 h-px bg-champagne/40" />
+        <div className="mt-16 text-center">
+
+          <div className="flex justify-center items-center gap-3 mb-4">
+            <div className="w-14 h-px bg-white/40"></div>
+            <Heart className="w-4 h-4 text-pink-200 fill-pink-200" />
+            <div className="w-14 h-px bg-white/40"></div>
           </div>
-          
-          <p 
-            className="text-lg text-foreground/70 mb-2"
+
+          <p
+            className="text-lg text-white"
             style={{ fontFamily: "var(--font-script), cursive" }}
           >
-            {footer}
+            Made with love, prayer and grace
           </p>
-          <p 
-            className="text-2xl text-foreground mb-4"
+
+          <p
+            className="text-3xl text-white mt-2"
             style={{ fontFamily: "var(--font-script), cursive" }}
           >
-            {copyright}
+            Stebin & Jesna
           </p>
-          <p className="text-foreground/40 text-sm">
-            © 2026
+
+          <p className="text-white/70 text-sm mt-2">
+            © 2026 InviteScroll
           </p>
-        </motion.footer>
+
+          {/* InviteScroll Tag */}
+          <div className="mt-6 flex flex-col items-center gap-2">
+
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-px bg-white/40"></div>
+              <Heart className="w-3 h-3 text-pink-200 fill-pink-200" />
+              <div className="w-10 h-px bg-white/40"></div>
+            </div>
+
+            <p
+              className="text-white text-sm"
+              style={{ fontFamily: "var(--font-script), cursive" }}
+            >
+              InviteScroll
+            </p>
+
+            <div className="flex items-center gap-4 text-xs text-white/80">
+
+              <span className="flex items-center gap-1">
+                <Phone size={14} />
+                050 857 7054
+              </span>
+
+              <span className="flex items-center gap-1">
+                <Instagram size={14} />
+                @invitescroll
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
       </div>
     </section>
   )
